@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ</title>
+    <link rel="stylesheet" href="csslogin.css">
+</head>
+<body>
+    <?php 
+        session_start();
+        include('db.php');
+        if(isset($_POST['login'])){
+            $U_Email = $_POST['U_Email'];
+            $U_Password = $_POST['U_Password'];
+
+            $sql = "select * from user where U_Email ='$U_Email' and U_Password = '$U_Password' ";
+
+            $result  = $conn -> query($sql);
+            if($result -> num_rows == 1){
+                $rs = $result -> fetch_assoc();
+                $_SESSION['U_Fullname'] = $rs['U_Fullname'];
+                $_SESSION['U_Email'] = $U_Email;
+                header('location: home.php');
+        }else{
+                echo "ไม่พบข้อมูล";
+            }
+
+        }
+    ?>
+    <h1>เข้าสู่ระบบ</h1>
+    <form action="" method="post">
+        <p>Email : <input type="email" name="U_Email" required></p>     
+        <p>รหัสผ่าน : <input type="text" name="U_Password" required></p>
+        <p><button type="submit" name="login">เข้าสู่ระบบ</button></p>
+    </form>
+</body>
+</html>
