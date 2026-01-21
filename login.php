@@ -7,15 +7,18 @@
     <title>เข้าสู่ระบบ</title>
     <link href="bt/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="bt/dist/js/bootstrap.bundle.min.js"></script>
-
-    <link rel="stylesheet" href="csslogin.css">
+     
+    <link rel="stylesheet" href="login.css"/>
+    <!-- <link rel="stylesheet" href="font.css"/> -->
 </head>
 
 <body>
-    <h1>เข้าสู่ระบบ</h1>
+    
 
-    <div class="parent">
-        <div class="div1">
+    <div class="login-wrapper">
+        <div class="login-box">
+            <h1>เข้าสู่ระบบ</h1>
+            <p></p>
             <form action="" method="post">
                 <p>Email : <input type="email" name="U_Email" required></p>
                 <p>รหัสผ่าน : <input type="password" name="U_Password" required></p>

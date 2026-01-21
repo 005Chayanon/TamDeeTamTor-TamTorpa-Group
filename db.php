@@ -2,7 +2,7 @@
     $h = "127.0.0.1";
     $u = "root";
     $p = "";
-    $db = "shcoolbooks";
+    $db = "db_shcoolbooks";
 
     $conn = new mysqli($h,$u,$p,$db);
 
