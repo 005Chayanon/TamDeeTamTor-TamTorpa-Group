@@ -5,13 +5,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pink Gradient Navbar</title>
-  <link href="bt/css/bootstrap.min.css" rel="stylesheet">
-  <script src="bt/js/bootstrap.bundle.min.js"></script>
+  <link href="icon/css/fontawesome.css" rel="stylesheet" />
+  <link href="icon/css/brands.css" rel="stylesheet" />
+  <link href="icon/css/solid.css" rel="stylesheet" />
+  <link href="icon/css/sharp-thin.css" rel="stylesheet" />
+  <link href="icon/css/sharp-duotone-thin.css" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="Ficon/favicon.ico">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </head>
+<style>
+  @font-face {
+        font-family: myFirstFont;
+        src: url(font/Mitr-Regular.ttf);
+    }
+    body{
+        font-family: myFirstFont;
+    }
+</style>
 
 <body>
 
   <?php
+  /*
   session_start();
   include('../db.php');
 
@@ -24,23 +40,24 @@
   $sql = "SELECT U_Fullname FROM user WHERE U_Email = '$email'";
   $result = $conn->query($sql);
   $user = $result->fetch_assoc();
-
+*/
   ?>
 
-  <!-- Navbar Start -->
+  
+<!-- Navbar Start -->
 
-  <nav class="navbar bg-body-tertiary fixed-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">PankQ Book</a>
+  <nav class="navbar  fixed-top"  style="background-color: #B1505A;">
+    <div class="container-fluid"  style="background-color: #B1505A;">
+      <a class="navbar-brand" href="#"  style="color: #ffffff;" > <img src="logo/logopank.png" style="width: 50px;">  PankQ Book</a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
-        aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        aria-controls="offcanvasNavbar" aria-label="Toggle navigation"  style="border-color: #ffffff; color: #ffffff; background-color: #EFD8DE ; ">
+        <span class="navbar-toggler-icon" style="color: #ffffff;" > </span>
+      </button> 
 
-      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+      <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel" style="background-color: rgba(239, 216, 222 ,0.8);  color: #851f29;" >
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">สวัสดี, <?php echo htmlspecialchars($user['U_Fullname']); ?>
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><h1>สวัสดี, <?php /* echo htmlspecialchars($user['U_Fullname']); */?></h1>
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
@@ -49,37 +66,9 @@
 
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">หน้าหลัก</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                หมวดหมู่
-              </a>
-
-              <ul class="dropdown-menu">
-
-                <li><a class="dropdown-item" href="#">หลักสูตรวิชาการ</a></li>
-                <li><a class="dropdown-item" href="#">หนังสือทั่วไป</a></li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-
-                <li><a class="dropdown-item" href="#">เอกสารของสถาบัน</a></li>
-
-              </ul>
+              <a class="nav-link" href="#">ออกจากระบบ</a>
             </li>
           </ul>
-
-          <form class="d-flex mt-3" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-            <button class="btn btn-outline-success" type="submit">ค้นหา</button>
-          </form>
 
         </div>
       </div>
