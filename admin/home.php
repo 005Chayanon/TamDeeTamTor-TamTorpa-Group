@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <?php include '../nav_admin.html'; ?>
+    <?php include '../nav_admin.php'; ?>
 
     <?php
     session_start();

@@ -10,6 +10,23 @@
 </head>
 
 <body>
+
+  <?php
+  session_start();
+  include('../db.php');
+
+  if (!isset($_SESSION['U_Email'])) {
+    header("location: ../login.php");
+    exit;
+  }
+
+  $email = $_SESSION['U_Email'];
+  $sql = "SELECT U_Fullname FROM user WHERE U_Email = '$email'";
+  $result = $conn->query($sql);
+  $user = $result->fetch_assoc();
+
+  ?>
+
   <!-- Navbar Start -->
 
   <nav class="navbar bg-body-tertiary fixed-top">
@@ -23,7 +40,7 @@
 
       <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <div class="offcanvas-header">
-          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">ชื่อผู้เข้าใช้
+          <h5 class="offcanvas-title" id="offcanvasNavbarLabel">สวัสดี, <?php echo htmlspecialchars($user['U_Fullname']); ?>
           </h5>
           <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
