@@ -1,25 +1,71 @@
 body {
-    background-image: url("img/kuy.png");
-    background-size: 100% auto;
-    background-repeat: no-repeat;
-    background-position: center top;
-  }
+  background-image: url("img/kuy.png");
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
 
 .login-wrapper {
-    min-height: calc(100vh - 56px); /* ความสูง navbar */
-    display: flex;
-    justify-content: center; /* แนวนอน */
-    align-items: center;     /* แนวตั้ง */
+  min-height: calc(100vh - 56px);
+  /* ความสูง navbar */
+  display: flex;
+  justify-content: center;
+  /* แนวนอน */
+  align-items: center;
+  /* แนวตั้ง */
 }
 
 /* กล่อง login */
 .login-box {
-    padding: 30px;
-    border-radius: 10px;
-    background-color: rgba(168, 104, 104, 0.5); /* จางลง */
-    box-shadow: 0 4px 10px rgba(145, 124, 124, 0.952);
-    width: 350px;
-    text-align: center;
+  background: #fff0f5;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(255, 105, 180, 0.3);
+  text-align: center;
+}
+
+.login-box h1 {
+  margin-bottom: 20px;
+  color: #ff69b4;
+  font-weight: 600;
+}
+
+.login-box p {
+  margin: 12px 0;
+  color: #d63384;
+}
+
+.login-box input {
+  width: 200px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ffb6c1;
+  outline: none;
+  font-family: inherit;
+}
+
+.login-box input:focus {
+  border-color: #ff69b4;
+  box-shadow: 0 0 5px rgba(255, 105, 180, 0.5);
+}
+
+.login-box button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 15px;
+  background: #ff69b4;
+  color: white;
+  font-size: 16px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-box button:hover {
+  background: #ff1493;
+  transform: scale(1.03);
 }
 
 /* @import url('https://fonts.googleapis.com/css2?family=Lilita+One&family=Noto+Sans+Thai:wght@400;700&display=swap');

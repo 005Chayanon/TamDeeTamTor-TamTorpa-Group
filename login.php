@@ -7,21 +7,25 @@
     <title>เข้าสู่ระบบ</title>
     <link href="bt/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="bt/dist/js/bootstrap.bundle.min.js"></script>
-     
-    <link rel="stylesheet" href="login.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="font.css" />
+    <link rel="stylesheet" href="login.css" />
     <!-- <link rel="stylesheet" href="font.css"/> -->
 </head>
 
 <body>
-    
-
     <div class="login-wrapper">
         <div class="login-box">
             <h1>เข้าสู่ระบบ</h1>
             <p></p>
             <form action="" method="post">
-                <p>Email : <input type="email" name="U_Email" required></p>
-                <p>รหัสผ่าน : <input type="password" name="U_Password" required></p>
+                <label for="fname">Email :</label><br>
+                <input type="email" name="U_Email" required><br>
+                <label for="lname">รหัสผ่าน :</label><br>
+                <input type="password" name="U_Password" required><br>
                 <p><button type="submit" name="login">เข้าสู่ระบบ</button></p>
             </form>
         </div>
