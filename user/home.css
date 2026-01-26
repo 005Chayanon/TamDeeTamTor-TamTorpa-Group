@@ -1,0 +1,16 @@
+.box {
+    width: auto;
+    height: auto;
+    background: #EFD8DE;
+    border: 2px solid #696767;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+}
+
+table,
+th,
+td {
+    border: 1px solid #696767;
+    padding: 10px;
+}

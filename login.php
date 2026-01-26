@@ -22,7 +22,7 @@
             <h1>เข้าสู่ระบบ</h1>
             <p></p>
             <form action="" method="post">
-                <label for="fname">Email :</label><br>
+                <label for="fname" >Email :</label><br>
                 <input type="email" name="U_Email" required><br>
                 <label for="lname">รหัสผ่าน :</label><br>
                 <input type="password" name="U_Password" required><br>
@@ -56,7 +56,7 @@
             }
         } else {
     ?> <script>
-                alert('รหัสผ่านไม่ตรงกัน กรุณาลองใหม่');
+                alert('อีเมลหรือรหัสผ่านไม่ถูกต้อง');
                 history.go(-1)
             </script> <?php
                     }
