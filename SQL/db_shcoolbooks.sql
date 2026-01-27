@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 22, 2026 at 03:41 AM
+-- Generation Time: Jan 27, 2026 at 08:10 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -35,6 +35,17 @@ CREATE TABLE `all_book` (
   `author` varchar(100) NOT NULL COMMENT 'ผู้แต่ง',
   `publisher` varchar(100) NOT NULL COMMENT 'สำนักพิมพ์',
   `year` year(4) NOT NULL COMMENT 'ปีที่พิมพ์'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `category`
+--
+
+CREATE TABLE `category` (
+  `category_id` int(2) NOT NULL COMMENT 'รหัสหมวดหมู่',
+  `category_name` varchar(255) NOT NULL COMMENT 'ชื่อหมวดหมู่'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -88,6 +99,12 @@ ALTER TABLE `all_book`
   ADD PRIMARY KEY (`B_Id`);
 
 --
+-- Indexes for table `category`
+--
+ALTER TABLE `category`
+  ADD PRIMARY KEY (`category_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -102,6 +119,12 @@ ALTER TABLE `user`
 --
 ALTER TABLE `all_book`
   MODIFY `B_Id` int(3) NOT NULL AUTO_INCREMENT COMMENT 'รหัสหนังสือ';
+
+--
+-- AUTO_INCREMENT for table `category`
+--
+ALTER TABLE `category`
+  MODIFY `category_id` int(2) NOT NULL AUTO_INCREMENT COMMENT 'รหัสหมวดหมู่';
 
 --
 -- AUTO_INCREMENT for table `user`

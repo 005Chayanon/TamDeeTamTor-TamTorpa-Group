@@ -22,7 +22,7 @@
     <br>
     <br>
     <div class="box">
-        <table>
+        <table class="table">
             <tr>
                 <th>รูปนักเรียนพร้อมหนังสือ</th>
                 <th>ชื่อนักเรียน</th>
@@ -30,7 +30,7 @@
                 <th>ชื่อหนังสือ</th>
                 <th>วันยืม</th>
                 <th>วันคืน</th>
-                <th>แก้ไข</th>
+                <th>การจัดการ</th>
             </tr>
             <tr>
                 <?php

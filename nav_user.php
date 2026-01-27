@@ -264,7 +264,7 @@
       <!-- End search bar -->
 
       <div class="d-grid gap-2 d-md-block bu-edit">
-        <button class="btn  btn-sm" type="button" href="#">แก้ไขข้อมูล</button>
+        <a  type="button" class="btn  btn-sm" type="button" href="./b-r-user/b-r.php">เพิ่มรายการยืม-คืน</a>
       </div>
 
       <!-- s toggle bar -->
