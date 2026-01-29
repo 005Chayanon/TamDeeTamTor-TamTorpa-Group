@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 29, 2026 at 04:17 AM
+-- Generation Time: Jan 29, 2026 at 05:18 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -47,6 +47,37 @@ CREATE TABLE `category` (
   `category_id` int(2) NOT NULL COMMENT 'รหัสหมวดหมู่',
   `category_name` varchar(255) NOT NULL COMMENT 'ชื่อหมวดหมู่'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`category_id`, `category_name`) VALUES
+(1, 'เทคโนโลยีสารสนเทศ'),
+(2, 'การบัญชี'),
+(3, 'การตลาด'),
+(4, 'บริหารธุรกิจ'),
+(5, 'โลจิสติกส์'),
+(6, 'การท่องเที่ยวและการบริการ'),
+(7, 'ภาษาอังกฤษ'),
+(8, 'ภาษาไทย'),
+(9, 'นวนิยาย'),
+(10, 'วรรณกรรม'),
+(11, 'วิทยาศาสตร์'),
+(12, 'คณิตศาสตร์'),
+(13, 'สังคมศึกษา'),
+(14, 'ประวัติศาสตร์'),
+(15, 'การออกแบบกราฟิก'),
+(16, 'มนุษย์ศาสตร์'),
+(17, 'จิตวิทยา'),
+(18, 'การศึกษา'),
+(19, 'สุขภาพ'),
+(20, 'กฎหมายเบื้องต้น'),
+(21, 'การเงินส่วนบุคคล'),
+(22, 'คู่มือนักศึกษา'),
+(23, 'คู่มืออาจารย์'),
+(24, 'เอกสารหลักสูตร'),
+(25, 'เอกสารกิจกรรม');
 
 -- --------------------------------------------------------
 
@@ -137,7 +168,7 @@ ALTER TABLE `all_book`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` int(2) NOT NULL AUTO_INCREMENT COMMENT 'รหัสหมวดหมู่';
+  MODIFY `category_id` int(2) NOT NULL AUTO_INCREMENT COMMENT 'รหัสหมวดหมู่', AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `history`

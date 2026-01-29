@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <?php include '../nav_admin.php'; ?>
+    <?php include '../nav_user.php'; ?>
 
     <?php
     session_start();
@@ -32,10 +32,8 @@
             <tr>
                 <th>รูปนักเรียนพร้อมหนังสือ</th>
                 <th>ชื่อนักเรียน</th>
-                <th>รหัสนักเรียน</th>
-                <th>ชื่อหนังสือ</th>
+                <th>รหัสหนังสือ</th>
                 <th>วันยืม</th>
-                <th>วันคืน</th>
                 <th>การจัดการ</th>
                 <th>ลบรายการ</th>
             </tr>
@@ -47,11 +45,10 @@
                 while ($rs = $result->fetch_assoc()) {
                 ?>
             <tr>
-                <td><img src="uploads/<?php echo $rs['S_photo']; ?>" width="100"></td>
+                <td><img src="../uploads/<?php echo $rs['S_photo']; ?>" width="100"></td>
                 <td><?php echo $rs['S_Name']; ?></td>
-                <td><?php echo $rs['borrow_date']; ?></td>
-                <td><?php echo $rs['due_date']; ?></td>
-                <td><?php echo $rs['userPassword']; ?></td>
+                <td><?php echo $rs['B_Id']; ?></td>
+                <td><?php echo $rs['H_ts']; ?></td>
                 <td><a href="edit.php?H_id=<?php echo $rs['H_id']; ?>">แก้ไข</a></td>
                 <td><a href="?delete&H_id=<?php echo $rs['H_id']; ?>" onclick="return confirm('ลบใช่หรือไม่');">ลบ</a></td>
             </tr>
