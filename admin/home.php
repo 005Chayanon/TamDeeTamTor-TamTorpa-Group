@@ -17,6 +17,11 @@
     session_start();
     include('../db.php');
 
+    if (isset($_GET['delete'])) {
+    $H_id = $_GET['H_id'];
+    $sql = "delete from history where H_id ='$H_id' ";
+    $conn->query($sql);
+}
 
     ?>
     <br>
@@ -26,27 +31,25 @@
             <tr>
                 <th>รูปนักเรียนพร้อมหนังสือ</th>
                 <th>ชื่อนักเรียน</th>
-                <th>รหัสนักเรียน</th>
-                <th>ชื่อหนังสือ</th>
+                <th>รหัสหนังสือ</th>
                 <th>วันยืม</th>
-                <th>วันคืน</th>
                 <th>การจัดการ</th>
+                <th>ลบรายการ</th>
             </tr>
             <tr>
                 <?php
                 $sql = "select * from history";
+
                 $result = $conn->query($sql);
                 while ($rs = $result->fetch_assoc()) {
                 ?>
             <tr>
-                <td><?php echo $rs['S_photo']; ?></td>
+                <td><img src="../uploads/<?php echo $rs['S_photo']; ?>" width="100"></td>
                 <td><?php echo $rs['S_Name']; ?></td>
-                <td><?php echo $rs['borrow_date']; ?></td>
-                <td><?php echo $rs['due_date']; ?></td>
-                <td><?php echo $rs['userPassword']; ?></td>
-                <td><a href="?delete&userId=<?php echo $rs['userId']; ?>"
-                        onclick="return confirm('ลบใช่หรือไม่');">ลบ</a></td>
-                <td><a href="edit.php?userId=<?php echo $rs['userId']; ?>">แก้ไข</a></td>
+                <td><?php echo $rs['B_Id']; ?></td>
+                <td><?php echo $rs['H_ts']; ?></td>
+                <td><a href="edit.php?H_id=<?php echo $rs['H_id']; ?>">แก้ไข</a></td>
+                <td><a href="?delete&H_id=<?php echo $rs['H_id']; ?>" onclick="return confirm('ลบใช่หรือไม่');">ลบ</a></td>
             </tr>
         <?php } ?>
         </tr>

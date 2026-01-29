@@ -1,0 +1,73 @@
+/* จัดให้อยู่กึ่งกลางหน้าจอ */
+
+
+/* ครอบทั้งฟอร์ม */
+.login-wrapper {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
+/* กล่องฟอร์ม */
+.login-box {
+    background: linear-gradient(135deg, #fde2e4, #c28b7f);
+    padding: 30px 40px;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 12px;s
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ข้อความหัวข้อ */
+.login-box p:first-child {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* จัดระยะข้อความ */
+.login-box p {
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* input */
+.login-box input[type="text"],
+.login-box input[type="number"],
+.login-box input[type="file"] {
+    width: 100%;
+    padding: 8px 10px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+/* ปุ่ม */
+.login-box button {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+/* ปุ่ม submit */
+.login-box button[type="submit"] {
+    background: linear-gradient(135deg, #7c393d, #8d5c58);
+    color: #fff;
+}
+
+/* ปุ่ม reset */
+.login-box button[type="reset"] {
+    background: linear-gradient(135deg, #cc2b36, #946058);
+    color: #fff;
+    margin-left: 8px;
+}
+
+/* hover */
+.login-box button:hover {
+    opacity: 0.9;
+}

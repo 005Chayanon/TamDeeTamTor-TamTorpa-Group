@@ -14,7 +14,7 @@
   <link href="../icon/css/sharp-duotone-thin.css" rel="stylesheet" />
   <link rel="../icon" type="image/x-icon" href="../Ficon/favicon.ico">
 
-  <style>
+  <style> 
     @font-face {
       font-family: myFirstFont;
       src: url(../font/Mitr-Regular.ttf);
@@ -22,6 +22,7 @@
 
     body {
       font-family: myFirstFont;
+      background: linear-gradient(135deg, #f7bfc1, #a3837e);
     }
 
     .dropdown {
@@ -114,7 +115,7 @@
 
   <nav class="navbar  fixed-top " style="background-color: #B1505A;">
     <div class="container-fluid" style="background-color: #B1505A;">
-      <a class="navbar-brand" href="#" style="color: #ffffff;"> <img src="../logo/logopank.png" style="width: 50px;"> PankQ Book</a>
+      <a class="navbar-brand" href="../admin/home.php" style="color: #ffffff;"> <img src="../logo/logopank.png" style="width: 50px;"> PankQ Book</a>
 
       <div class="dropdown">
         <li class="nav-item dropdown">
@@ -270,7 +271,7 @@
       <!-- End search bar -->
 
       <div class="d-grid gap-2 d-md-block bu-add">
-        <a  type= button class="btn  btn-sm" type="button" href="./b-r-user/b-r.php">เพิ่มรายการยืม-คืน</a>
+        <a  type= button class="btn  btn-sm" type="button" href="admin/b_r.php">เพิ่มรายการยืม-คืน</a>
       </div>
       <div class="d-grid gap-2 d-md-block bu-edit">
         <a type="button" class="btn  btn-sm" type="button" href="#">แก้ไขข้อมูล</a>
