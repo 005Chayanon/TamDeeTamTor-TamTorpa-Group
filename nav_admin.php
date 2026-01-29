@@ -14,7 +14,7 @@
   <link href="../icon/css/sharp-duotone-thin.css" rel="stylesheet" />
   <link rel="../icon" type="image/x-icon" href="../Ficon/favicon.ico">
 
-  <style> 
+  <style>
     @font-face {
       font-family: myFirstFont;
       src: url(../font/Mitr-Regular.ttf);
@@ -22,7 +22,6 @@
 
     body {
       font-family: myFirstFont;
-      background: linear-gradient(135deg, #f7bfc1, #a3837e);
     }
 
     .dropdown {
@@ -128,7 +127,7 @@
       <!-- End search bar -->
 
       <div class="d-grid gap-2 d-md-block bu-add" style="margin-left: 300px;">
-        <a  type= button class="btn  btn-sm" type="button" href="b_r.php">เพิ่มรายการยืม-คืน</a>
+        <a type=button class="btn  btn-sm" type="button" href="b_r.php">เพิ่มรายการยืม-คืน</a>
       </div>
       <div class="d-grid gap-2 d-md-block bu-edit">
         <a type="button" class="btn  btn-sm" type="button" href="list.php">แก้ไขข้อมูล</a>
@@ -155,6 +154,7 @@
 
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
+              <h5><a class="nav-link text-decoration-underline link-offset-2" href="add_user.php">เพิ่มผู้ใช้ <i class="fa-solid fa-circle-plus"></i></a></h5>
               <h5><a class="nav-link text-decoration-underline link-offset-2" href="?Logout" onclick="return confirm('ออกจากระบบ ใช่ หรือ ไม่')">ออกจากระบบ <i class="fa-solid fa-right-from-bracket"></i> </a></h5>
             </li>
           </ul>

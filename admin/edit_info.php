@@ -87,8 +87,8 @@ if (isset($_POST['update'])) {
             รหัสผ่าน: <input type="text" name="U_Password" value="<?php echo $rs['U_Password']; ?>"><br><br>
             สถานะ:
             <select name="U_Status">
-                <option value="0" <?php if ($rs['U_Status'] == 0) echo 'selected'; ?>>แอดมิน</option>
-                <option value="1" <?php if ($rs['U_Status'] == 1) echo 'selected'; ?>>ครู</option>
+                <option value="admin" <?php if ($rs['U_Status'] == 'admin') echo 'selected'; ?>>admin</option>
+                <option value="user" <?php if ($rs['U_Status'] == 'user') echo 'selected'; ?>>user</option>
             </select><br><br>
             <input type="submit" name="update" value="บันทึกการเปลี่ยนแปลง">
         </form>
