@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2026 at 08:10 AM
+-- Generation Time: Jan 29, 2026 at 04:17 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -55,15 +55,22 @@ CREATE TABLE `category` (
 --
 
 CREATE TABLE `history` (
+  `H_ts` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'วันยืม',
   `S_photo` varchar(100) NOT NULL COMMENT 'รูปนักเรียนพร้อมหนังสือที่ยืม',
   `S_Name` varchar(100) NOT NULL COMMENT 'ชื่อนักเรียน',
   `B_Id` int(11) NOT NULL COMMENT 'รหัสหนังสือ',
-  `borrow_date` date NOT NULL COMMENT 'วันที่ยืม',
-  `due_date` date NOT NULL COMMENT 'กำหนดคืน',
   `S_Phone` varchar(15) NOT NULL COMMENT 'เบอร์โทร',
   `Status01` tinyint(1) NOT NULL COMMENT '0=ยังไม่คืน , 1=คืนแล้ว',
-  `Status02` tinyint(1) NOT NULL COMMENT '0=ป , 1=อ'
+  `H_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `history`
+--
+
+INSERT INTO `history` (`H_ts`, `S_photo`, `S_Name`, `B_Id`, `S_Phone`, `Status01`, `H_id`) VALUES
+('2026-01-28 09:26:21', 'IMG_3110.jpg', 'โอด', 123123, '21321312', 0, 10),
+('2026-01-28 09:26:21', 'IMG_3110.jpg', 'โอด', 213213, '21321312', 0, 11);
 
 -- --------------------------------------------------------
 
@@ -105,6 +112,12 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`);
 
 --
+-- Indexes for table `history`
+--
+ALTER TABLE `history`
+  ADD PRIMARY KEY (`H_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -125,6 +138,12 @@ ALTER TABLE `all_book`
 --
 ALTER TABLE `category`
   MODIFY `category_id` int(2) NOT NULL AUTO_INCREMENT COMMENT 'รหัสหมวดหมู่';
+
+--
+-- AUTO_INCREMENT for table `history`
+--
+ALTER TABLE `history`
+  MODIFY `H_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `user`
