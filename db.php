@@ -1,7 +1,7 @@
 <?php
     $h = "127.0.0.1";
     $u = "root";
-    $p = "";
+    $p = "28102550";
     $db = "db_shcoolbooks";
 
     $conn = new mysqli($h,$u,$p,$db);

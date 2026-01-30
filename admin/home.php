@@ -24,8 +24,7 @@
 }
 
     ?>
-    <br>
-    <br>
+    <br><br><br><br>
     <div class="box">
         <table class="table">
             <tr>
