@@ -107,7 +107,7 @@
 
   <nav class="navbar  fixed-top " style="background-color: #B1505A;">
     <div class="container-fluid" style="background-color: #B1505A;">
-      <a class="navbar-brand" href="#" style="color: #ffffff;"> <img src="../logo/logopank.png" style="width: 50px;"> PankQ Book</a>
+      <a class="navbar-brand" href="home.php" style="color: #ffffff;"> <img src="../logo/logopank.png" style="width: 50px;"> PankQ Book</a>
 
       &nbsp;
       &nbsp;

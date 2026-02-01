@@ -22,10 +22,14 @@
             <h1>เข้าสู่ระบบ</h1>
             <p></p>
             <form action="" method="post">
-                <label for="fname" >Email :</label><br>
-                <input type="email" name="U_Email" required><br>
-                <label for="lname">รหัสผ่าน :</label><br>
-                <input type="password" name="U_Password" required><br>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="U_Email">
+                    <label for="floatingInput">Email</label>
+                </div>
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="U_Password">
+                    <label for="floatingPassword">Password</label>
+                </div>
                 <p><button type="submit" name="login">เข้าสู่ระบบ</button></p>
             </form>
         </div>

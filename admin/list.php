@@ -21,8 +21,7 @@
     $conn->query($sql);
     }
     ?>
-    <br>
-    <br>
+    <br><br><br><br>
     <h1>รายชื่อผู้ใช้</h1>
     <div class="box">
         <table class="table">

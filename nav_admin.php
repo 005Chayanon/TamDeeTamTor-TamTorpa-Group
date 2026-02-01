@@ -84,6 +84,7 @@
       border-color: #ffffff;
     }
   </style>
+</head>
 
 <body>
 
@@ -118,12 +119,21 @@
 
       &nbsp;
       <!-- s search bar -->
-      <form class="d-flex" role="search" style="margin-left: 300px;">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="width: 500px" />
+      <form class="d-flex" role="search" method="get" action="home.php" style="margin-left: 300px;">
+        <input class="form-control me-2"
+          type="search"
+          name="search"
+          placeholder="ค้นหาชื่อนักเรียน / รหัสหนังสือ"
+          style="width: 500px"
+          value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>" />
+
         <div class="bu-search">
-          <button class="btn btn-outline" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+          <button class="btn btn-outline" type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
         </div>
       </form>
+
       <!-- End search bar -->
 
       <div class="d-grid gap-2 d-md-block bu-add" style="margin-left: 300px;">

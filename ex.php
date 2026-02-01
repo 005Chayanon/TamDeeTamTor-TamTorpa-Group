@@ -1,3 +1,20 @@
+<?php
+$search1 = "select * from history";
+
+  $search = '';
+
+  if (isset($_GET['search']) && $_GET['search'] != '') {
+    $search = $_GET['search'];
+    $search1 = "SELECT * FROM history
+            WHERE S_Name LIKE '%$search%' 
+               OR B_Id LIKE '%$search%'";
+  } else {
+    $search1 = "SELECT * FROM history";
+  }
+  $result = $conn->query($search1);
+?>
+
+
 <div class="dropdown">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
