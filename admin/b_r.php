@@ -8,28 +8,31 @@ if (isset($_POST['submit'])) {
     $S_Name = $_POST['S_Name'];
     $S_Phone = $_POST['S_Phone'];
 
-    // ===== จัดการไฟล์รูป =====
     $filename = $_FILES['S_photo']['name'];
     $tmpname  = $_FILES['S_photo']['tmp_name'];
+    $error    = $_FILES['S_photo']['error'];
 
-    $targetdir  = "../uploads/";
-    $targetfile = $targetdir . $filename;
+    $targetdir = "../uploads/";
+    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+    $allow = ['jpg', 'jpeg', 'png'];
 
-    if (!empty($filename)) {
+    if (!in_array(strtolower($ext), $allow)) {
+        alert('ไฟล์ไม่ถูกต้อง');
+        exit;
+    }
+
+    $newname = uniqid("img_") . "." . $ext;
+    $targetfile = $targetdir . $newname;
+
+    if ($error === 0) {
         move_uploaded_file($tmpname, $targetfile);
     }
 
-    // ===== บันทึกลงฐานข้อมูล =====
     $sql = "INSERT INTO history (B_Id, S_Name, S_Phone, S_photo)
-            VALUES ('$B_Id', '$S_Name', '$S_Phone', '$filename')";
+            VALUES ('$B_Id', '$S_Name', '$S_Phone', '$newname')";
 
-    if ($conn->query($sql) === TRUE) {
-        echo "<script>
-            alert('เพิ่มข้อมูลเรียบร้อย');
-            window.location.href='home.php';
-        </script>";
-    } else {
-        echo "Error: " . $conn->error;
+    if ($conn->query($sql)) {
+        echo "<script>alert('เพิ่มข้อมูลเรียบร้อย');location='home.php';</script>";
     }
 }
 ?>
@@ -121,7 +124,7 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
-    <?php include '../nav_admin.php'; ?>
+    <?php include 'nav_admin.php'; ?>
 
 
     <br>

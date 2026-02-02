@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <?php include '../nav_admin.php'; ?>
+    <?php include 'nav_admin.php'; ?>
     <?php
     include('../db.php');
     $H_id = $_GET['H_id'];

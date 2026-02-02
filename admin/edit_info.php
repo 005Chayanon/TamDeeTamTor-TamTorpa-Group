@@ -117,7 +117,7 @@ if (isset($_POST['update'])) {
 </head>
 
 <body>
-    <?php include '../nav_admin.php'; ?>
+    <?php include 'nav_admin.php'; ?>
     <br>
     <br>
     <br>

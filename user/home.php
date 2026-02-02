@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <?php include '../nav_user.php'; ?>
+    <?php include 'nav_user.php'; ?>
 
     <?php
     session_start();
