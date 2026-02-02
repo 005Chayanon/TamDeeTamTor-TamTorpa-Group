@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) {
     $allow = ['jpg', 'jpeg', 'png'];
 
     if (!in_array(strtolower($ext), $allow)) {
-        alert('ไฟล์ไม่ถูกต้อง');
+        echo "<script>alert('ไฟล์ไม่ถูกต้อง');</script>";
         exit;
     }
 
