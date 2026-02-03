@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jan 29, 2026 at 05:18 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- Host: localhost
+-- Generation Time: Feb 03, 2026 at 07:42 AM
+-- Server version: 8.0.17
+-- PHP Version: 7.3.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -29,13 +30,22 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `all_book` (
   `B_Id` int(3) NOT NULL COMMENT 'รหัสหนังสือ',
-  `B_photo` varchar(100) NOT NULL COMMENT 'รูปหนังสือ',
-  `B_Name` varchar(100) NOT NULL COMMENT 'ชื่อหนังสือ',
-  `category_id` varchar(2) NOT NULL COMMENT 'หมวดหมู่',
-  `author` varchar(100) NOT NULL COMMENT 'ผู้แต่ง',
-  `publisher` varchar(100) NOT NULL COMMENT 'สำนักพิมพ์',
+  `B_Name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ชื่อหนังสือ',
+  `category_id` varchar(2) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'หมวดหมู่',
+  `author` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ผู้แต่ง',
+  `publisher` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'สำนักพิมพ์',
   `year` year(4) NOT NULL COMMENT 'ปีที่พิมพ์'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `all_book`
+--
+
+INSERT INTO `all_book` (`B_Id`, `B_Name`, `category_id`, `author`, `publisher`, `year`) VALUES
+(101, 'ภาษาไทย', '08', 'สมชาย', 'เล่มละหน้า', 0000),
+(102, 'ภาษา C พื้นฐาน', '01', 'สมหญิง', 'abc', 0000),
+(103, 'คณิตศาสตร์ ป.2', '12', 'สมหมาย', 'กขค', 2000),
+(104, 'หลักสูตรการสอน 2580', '24', 'สมศรี', 'php', 0000);
 
 -- --------------------------------------------------------
 
@@ -45,7 +55,7 @@ CREATE TABLE `all_book` (
 
 CREATE TABLE `category` (
   `category_id` int(2) NOT NULL COMMENT 'รหัสหมวดหมู่',
-  `category_name` varchar(255) NOT NULL COMMENT 'ชื่อหมวดหมู่'
+  `category_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ชื่อหมวดหมู่'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -86,11 +96,12 @@ INSERT INTO `category` (`category_id`, `category_name`) VALUES
 --
 
 CREATE TABLE `history` (
-  `H_ts` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp() COMMENT 'วันยืม',
-  `S_photo` varchar(100) NOT NULL COMMENT 'รูปนักเรียนพร้อมหนังสือที่ยืม',
-  `S_Name` varchar(100) NOT NULL COMMENT 'ชื่อนักเรียน',
+  `H_ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'วันยืม',
+  `S_photo` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'รูปนักเรียนพร้อมหนังสือที่ยืม',
+  `B_Name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ชื่อหนังสือ	',
+  `S_Name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ชื่อนักเรียน',
   `B_Id` int(11) NOT NULL COMMENT 'รหัสหนังสือ',
-  `S_Phone` varchar(15) NOT NULL COMMENT 'เบอร์โทร',
+  `S_Phone` varchar(15) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'เบอร์โทร',
   `Status01` tinyint(1) NOT NULL COMMENT '0=ยังไม่คืน , 1=คืนแล้ว',
   `H_id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -99,9 +110,10 @@ CREATE TABLE `history` (
 -- Dumping data for table `history`
 --
 
-INSERT INTO `history` (`H_ts`, `S_photo`, `S_Name`, `B_Id`, `S_Phone`, `Status01`, `H_id`) VALUES
-('2026-01-28 09:26:21', 'IMG_3110.jpg', 'โอด', 123123, '21321312', 0, 10),
-('2026-01-28 09:26:21', 'IMG_3110.jpg', 'โอด', 213213, '21321312', 0, 11);
+INSERT INTO `history` (`S_photo`, `B_Name`, `S_Name`, `B_Id`, `S_Phone`, `Status01`, `H_id`) VALUES
+('img_698062b810b13.jpg', '', 'tor', 322312, '0506189956', 1, 39),
+('img_6980632e39cb5.jpg', '', 'tor', 322312, '0506189956', 1, 40),
+('img_6981986f251e1.jpg', '', 'tor', 102, '2131312', 1, 41);
 
 -- --------------------------------------------------------
 
@@ -111,10 +123,10 @@ INSERT INTO `history` (`H_ts`, `S_photo`, `S_Name`, `B_Id`, `S_Phone`, `Status01
 
 CREATE TABLE `user` (
   `U_Id` int(10) NOT NULL COMMENT 'รหัสประจำตัว',
-  `U_Fullname` varchar(100) NOT NULL COMMENT 'ชื่อ-นามสกุล',
-  `U_Email` varchar(50) NOT NULL COMMENT 'อีเมล',
-  `U_Password` varchar(50) NOT NULL COMMENT 'รหัสผ่าน',
-  `U_Phone` varchar(15) NOT NULL COMMENT 'เบอร์โทร',
+  `U_Fullname` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ชื่อ-นามสกุล',
+  `U_Email` varchar(50) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'อีเมล',
+  `U_Password` varchar(50) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'รหัสผ่าน',
+  `U_Phone` varchar(15) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'เบอร์โทร',
   `U_Status` tinyint(1) NOT NULL COMMENT '0=แอดมิน,1=ครู'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -124,7 +136,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`U_Id`, `U_Fullname`, `U_Email`, `U_Password`, `U_Phone`, `U_Status`) VALUES
 (1, 'non', 'non@gmail.com', '1234', '0830503991', 0),
-(2, 'art', 'art@gmail.com', '1234', '0830503992', 1);
+(2, 'art', 'art@gmail.com', '1234', '0830503992', 1),
+(3, 'admin', 'admin@gmail.com', 'admin', 'admin', 0);
 
 --
 -- Indexes for dumped tables
@@ -162,7 +175,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `all_book`
 --
 ALTER TABLE `all_book`
-  MODIFY `B_Id` int(3) NOT NULL AUTO_INCREMENT COMMENT 'รหัสหนังสือ';
+  MODIFY `B_Id` int(3) NOT NULL AUTO_INCREMENT COMMENT 'รหัสหนังสือ', AUTO_INCREMENT=105;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -174,13 +187,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `history`
 --
 ALTER TABLE `history`
-  MODIFY `H_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `H_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `U_Id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'รหัสประจำตัว', AUTO_INCREMENT=3;
+  MODIFY `U_Id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'รหัสประจำตัว', AUTO_INCREMENT=4;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

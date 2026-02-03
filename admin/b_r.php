@@ -46,6 +46,10 @@ if (isset($_POST['submit'])) {
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <style>
         body {
             background-color: #ffffff;
@@ -120,21 +124,41 @@ if (isset($_POST['submit'])) {
             background-color: #f28bb0;
         }
     </style>
+    
+    <script>
+        $(document).ready(function() {
+            $('.search-book').select2({
+                placeholder: "พิมพ์ค้นหารหัสหนังสือหรือชื่อหนังสือ",
+                allowClear: true,
+                width: '300px'
+            });
+        });
+    </script>
 
 </head>
 
 <body>
     <?php include 'nav_admin.php'; ?>
-
-
-    <br>
-    <br>
+    <br><br><br><br>
     <div class="login-wrapper">
         <div class="login-box">
             <h2>เพิ่มข้อมูลการยืมหนังสือ</h2>
             <p></p>
             <form action="" method="post" enctype="multipart/form-data">
-                <p>รหัสหนังสือ : <input type="number" name="B_Id" required></p>
+                <p>รหัสหนังสือ : <br>
+                    <select name="B_Id" class="search-book" required>
+                        <option value="">-- เลือกรหัสหนังสือ --</option>
+                        <?php
+                        $sqlBook = "SELECT B_Id, B_Name FROM all_book";
+                        $rsBook = $conn->query($sqlBook);
+                        while ($row = $rsBook->fetch_assoc()) {
+                            echo "<option value='{$row['B_Id']}'>
+                            {$row['B_Id']} - {$row['B_Name']}
+                            </option>";
+                        }
+                        ?>
+                    </select>
+                </p>
                 <p>ชื่อนักเรียน : <input type="text" name="S_Name" required></p>
                 <p>เบอร์โทร : <input type="text" name="S_Phone" required></p>
                 <p>รูปพร้อมหนังสือ : <input type="file" name="S_photo" required></p>

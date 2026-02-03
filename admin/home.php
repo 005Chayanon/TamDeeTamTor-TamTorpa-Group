@@ -32,13 +32,13 @@
                 SET Status01 = 1
                 WHERE H_id = '$H_id'";
 
-            if ($conn->query($sql) === TRUE) {
-                header("Location: home.php");
+            if ($conn->query($sql)) {
+                header('Location: home.php');
                 exit();
+                }
             } else {
                 echo "เกิดข้อผิดพลาด: " . $conn->error;
             }
-        }
         ?>
         <br><br><br><br>
         
