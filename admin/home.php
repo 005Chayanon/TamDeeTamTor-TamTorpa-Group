@@ -33,8 +33,7 @@
                 WHERE H_id = '$H_id'";
 
             if ($conn->query($sql)) {
-                header('Location: home.php');
-                exit();
+                echo "<script>alert('คืนแล้ว');location='home.php';</script>";
                 }
             } else {
                 echo "เกิดข้อผิดพลาด: " . $conn->error;
@@ -47,6 +46,7 @@
                 <tr>
                     <th>รูปนักเรียนพร้อมหนังสือ</th>
                     <th>ชื่อนักเรียน</th>
+                    <th>ชื่อหนังสือ</th>
                     <th>รหัสหนังสือ</th>
                     <th>วันยืม</th>
                     <th>สถานะ</th>
@@ -63,6 +63,7 @@
                 <tr>
                     <td><img src="../uploads/<?php echo $rs['S_photo']; ?>" width="120"></td>
                     <td><?php echo $rs['S_Name']; ?></td>
+                    <td><?php echo $rs['B_Name']?></td>
                     <td><?php echo $rs['B_Id']; ?></td>
                     <td><?php echo $rs['H_ts']; ?></td>
                     <td>
