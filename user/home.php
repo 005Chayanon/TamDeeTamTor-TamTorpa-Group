@@ -11,36 +11,44 @@
     </head>
 
     <body>
-        <?php include 'nav_admin.php'; ?>
 
         <?php
         session_start();
         include('../db.php');
+        include 'nav_user.php';
 
-        if (isset($_GET['delete'])) {
-            $H_id = $_GET['H_id'];
-            $sql = "delete from history where H_id ='$H_id' ";
-            $conn->query($sql);
+        /* ===== ลบรายการ ===== */
+        if (isset($_GET['delete'], $_GET['H_id'])) {
+            $H_id = (int)$_GET['H_id'];
+            $conn->query("DELETE FROM history WHERE H_id = $H_id");
+            echo "<script>alert('ลบรายการแล้ว');location='home.php';</script>";
+            exit;
         }
 
+        /* ===== คืนหนังสือ ===== */
+        if (isset($_GET['return'], $_GET['H_id'])) {
+            $H_id = (int)$_GET['H_id'];
+            $conn->query("UPDATE history SET Status01 = 1 WHERE H_id = $H_id");
+            echo "<script>alert('คืนหนังสือเรียบร้อย');location='home.php';</script>";
+            exit;
+        }
 
-        if (isset($_GET['return'])) {
+        /* ===== ค้นหา ===== */
+        $search = $_GET['search'] ?? '';
+        $where = '';
 
-            $H_id = $_GET['H_id'];
-
-            $sql = "UPDATE history
-                SET Status01 = 1
-                WHERE H_id = '$H_id'";
-
-            if ($conn->query($sql)) {
-                echo "<script>alert('คืนแล้ว');location='home.php';</script>";
-                }
-            } else {
-                echo "เกิดข้อผิดพลาด: " . $conn->error;
-            }
+        if ($search !== '') {
+            $search_safe = $conn->real_escape_string($search);
+            $where = "
+        WHERE S_Name LIKE '%$search_safe%'
+        OR B_Name LIKE '%$search_safe%'
+        OR B_Id   LIKE '%$search_safe%'
+    ";
+        }
         ?>
+
         <br><br><br><br>
-        
+
         <div class="box">
             <table class="table">
                 <tr>
@@ -55,7 +63,10 @@
                 </tr>
                 <tr>
                     <?php
-                    $sql = "select * from history";
+                    $sql = "SELECT * FROM history
+                        $where
+                        ORDER BY H_id DESC
+                    ";
 
                     $result = $conn->query($sql);
                     while ($rs = $result->fetch_assoc()) {
@@ -63,7 +74,7 @@
                 <tr>
                     <td><img src="../uploads/<?php echo $rs['S_photo']; ?>" width="120"></td>
                     <td><?php echo $rs['S_Name']; ?></td>
-                    <td><?php echo $rs['B_Name']?></td>
+                    <td><?php echo $rs['B_Name'] ?></td>
                     <td><?php echo $rs['B_Id']; ?></td>
                     <td><?php echo $rs['H_ts']; ?></td>
                     <td>

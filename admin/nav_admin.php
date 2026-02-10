@@ -164,6 +164,8 @@
 
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
+              <h5><a href="add_book.php"></a></h5>
+              <h5><a class="nav-link text-decoration-underline link-offset-2" href="add_book.php">เพิ่มหนังสือ <i class="fa-solid fa-book"></i></a></h5>
               <h5><a class="nav-link text-decoration-underline link-offset-2" href="add_user.php">เพิ่มผู้ใช้ <i class="fa-solid fa-circle-plus"></i></a></h5>
               <h5><a class="nav-link text-decoration-underline link-offset-2" href="?Logout" onclick="return confirm('ออกจากระบบ ใช่ หรือ ไม่')">ออกจากระบบ <i class="fa-solid fa-right-from-bracket"></i> </a></h5>
             </li>

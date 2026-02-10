@@ -4,48 +4,77 @@ include('../db.php');
 
 if (isset($_POST['submit'])) {
 
-    $B_Id = $_POST['B_Id'];
-    $S_Name = $_POST['S_Name'];
+    $B_Id    = $_POST['B_Id'];
+    $S_Name  = $_POST['S_Name'];
     $S_Phone = $_POST['S_Phone'];
 
+    // ===== ดึงชื่อหนังสือจาก B_Id =====
+    $sqlBook = "SELECT B_Name FROM all_book WHERE B_Id = ?";
+    $stmtBook = $conn->prepare($sqlBook);
+    $stmtBook->bind_param("s", $B_Id);
+    $stmtBook->execute();
+    $resultBook = $stmtBook->get_result();
+
+    if ($resultBook->num_rows == 0) {
+        echo "<script>alert('ไม่พบข้อมูลหนังสือ');</script>";
+        exit;
+    }
+
+    $rowBook = $resultBook->fetch_assoc();
+    $B_Name = $rowBook['B_Name'];
+
+    // ===== จัดการไฟล์รูป =====
     $filename = $_FILES['S_photo']['name'];
     $tmpname  = $_FILES['S_photo']['tmp_name'];
     $error    = $_FILES['S_photo']['error'];
 
     $targetdir = "../uploads/";
-    $ext = pathinfo($filename, PATHINFO_EXTENSION);
+    $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
     $allow = ['jpg', 'jpeg', 'png'];
 
-    if (!in_array(strtolower($ext), $allow)) {
-        echo "<script>alert('ไฟล์ไม่ถูกต้อง');</script>";
+    if (!in_array($ext, $allow)) {
+        echo "<script>alert('อนุญาตเฉพาะไฟล์ JPG, JPEG, PNG เท่านั้น');</script>";
+        exit;
+    }
+
+    if ($error !== 0) {
+        echo "<script>alert('เกิดข้อผิดพลาดในการอัปโหลดไฟล์');</script>";
         exit;
     }
 
     $newname = uniqid("img_") . "." . $ext;
     $targetfile = $targetdir . $newname;
 
-    if ($error === 0) {
-        move_uploaded_file($tmpname, $targetfile);
+    if (!move_uploaded_file($tmpname, $targetfile)) {
+        echo "<script>alert('อัปโหลดรูปไม่สำเร็จ');</script>";
+        exit;
     }
 
-    $sql = "INSERT INTO history (B_Id, S_Name, S_Phone, S_photo)
-            VALUES ('$B_Id', '$S_Name', '$S_Phone', '$newname')";
+    // ===== บันทึกข้อมูลลงฐานข้อมูล =====
+    $sql = "INSERT INTO history (B_Name, B_Id, S_Name, S_Phone, S_photo)
+            VALUES (?, ?, ?, ?, ?)";
 
-    if ($conn->query($sql)) {
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssss", $B_Name, $B_Id, $S_Name, $S_Phone, $newname);
+
+    if ($stmt->execute()) {
         echo "<script>alert('เพิ่มข้อมูลเรียบร้อย');location='home.php';</script>";
+    } else {
+        echo "<script>alert('บันทึกข้อมูลไม่สำเร็จ');</script>";
     }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <title>เพิ่มข้อมูลการยืมหนังสือ</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -79,26 +108,12 @@ if (isset($_POST['submit'])) {
             font-weight: bold;
         }
 
-        .login-box p {
-            margin-bottom: 15px;
-            color: #555;
-        }
-
-        .login-box input[type="text"],
-        .login-box input[type="number"],
-        .login-box input[type="file"] {
-            background-color: #ffffff;
+        .login-box input,
+        .login-box select {
             width: 100%;
             padding: 10px;
             border-radius: 8px;
             border: 1px solid #666063;
-            outline: none;
-            transition: 0.3s;
-        }
-
-        .login-box input:focus {
-            border-color: #e75480;
-            box-shadow: 0 0 5px rgba(231, 84, 128, 0.4);
         }
 
         .login-box button {
@@ -108,65 +123,62 @@ if (isset($_POST['submit'])) {
             padding: 10px 18px;
             border-radius: 8px;
             cursor: pointer;
-            margin-right: 10px;
-            transition: 0.3s;
-        }
-
-        .login-box button:hover {
-            background-color: #d9436f;
-        }
-
-        .login-box button[type="reset"] {
-            background-color: #f6a5c0;
-        }
-
-        .login-box button[type="reset"]:hover {
-            background-color: #f28bb0;
         }
     </style>
-    
+
     <script>
         $(document).ready(function() {
             $('.search-book').select2({
-                placeholder: "พิมพ์ค้นหารหัสหนังสือหรือชื่อหนังสือ",
+                placeholder: "พิมพ์ค้นหารหัสหรือชื่อหนังสือ",
                 allowClear: true,
-                width: '300px'
+                width: '100%'
             });
         });
     </script>
-
 </head>
 
 <body>
-    <?php include 'nav_admin.php'; ?>
-    <br><br><br><br>
-    <div class="login-wrapper">
-        <div class="login-box">
-            <h2>เพิ่มข้อมูลการยืมหนังสือ</h2>
-            <p></p>
-            <form action="" method="post" enctype="multipart/form-data">
-                <p>รหัสหนังสือ : <br>
-                    <select name="B_Id" class="search-book" required>
-                        <option value="">-- เลือกรหัสหนังสือ --</option>
-                        <?php
-                        $sqlBook = "SELECT B_Id, B_Name FROM all_book";
-                        $rsBook = $conn->query($sqlBook);
-                        while ($row = $rsBook->fetch_assoc()) {
-                            echo "<option value='{$row['B_Id']}'>
-                            {$row['B_Id']} - {$row['B_Name']}
-                            </option>";
-                        }
-                        ?>
-                    </select>
-                </p>
-                <p>ชื่อนักเรียน : <input type="text" name="S_Name" required></p>
-                <p>เบอร์โทร : <input type="text" name="S_Phone" required></p>
-                <p>รูปพร้อมหนังสือ : <input type="file" name="S_photo" required></p>
-                <p><button type="submit" name="submit">เพิ่มข้อมูล</button> <button type="reset">ล้าง</button></p>
+<?php include 'nav_admin.php'; ?>
 
-            </form>
-        </div>
+<br><br><br>
+
+<div class="login-wrapper">
+    <div class="login-box">
+        <h2>เพิ่มข้อมูลการยืมหนังสือ</h2>
+
+        <form action="" method="post" enctype="multipart/form-data">
+
+            <p>รหัสหนังสือ</p>
+            <select name="B_Id" class="search-book" required>
+                <option value="">-- เลือกรหัสหนังสือ --</option>
+                <?php
+                $sqlBook = "SELECT B_Id, B_Name FROM all_book";
+                $rsBook = $conn->query($sqlBook);
+                while ($row = $rsBook->fetch_assoc()) {
+                    echo "<option value='{$row['B_Id']}'>
+                        {$row['B_Id']} - {$row['B_Name']}
+                    </option>";
+                }
+                ?>
+            </select>
+
+            <p class="mt-3">ชื่อนักเรียน</p>
+            <input type="text" name="S_Name" required>
+
+            <p class="mt-3">เบอร์โทร</p>
+            <input type="text" name="S_Phone" required>
+
+            <p class="mt-3">รูปพร้อมหนังสือ</p>
+            <input type="file" name="S_photo" accept="image/*" required>
+
+            <div class="mt-4 text-center">
+                <button type="submit" name="submit">เพิ่มข้อมูล</button>
+                <button type="reset" class="btn btn-light ms-2">ล้าง</button>
+            </div>
+
+        </form>
     </div>
-</body>
+</div>
 
+</body>
 </html>

@@ -50,7 +50,7 @@
         if ($result->num_rows == 1) {
             $rs = $result->fetch_assoc();
             $_SESSION['U_Fullname'] = $rs['U_Fullname'];
-            $_SESSION['U_Email'] = $U_Email;
+            $_SESSION['U_Email'] = $rs['U_Email'];
             $_SESSION['userStatus'] = $rs['userStatus'];
 
             if ($rs['U_Status'] == '0') {
