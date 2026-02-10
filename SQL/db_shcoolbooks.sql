@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 03, 2026 at 07:42 AM
+-- Generation Time: Feb 10, 2026 at 09:25 AM
 -- Server version: 8.0.17
 -- PHP Version: 7.3.10
 
@@ -31,7 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `all_book` (
   `B_Id` int(3) NOT NULL COMMENT 'รหัสหนังสือ',
   `B_Name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ชื่อหนังสือ',
-  `category_id` varchar(2) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'หมวดหมู่',
+  `category_id` int(2) NOT NULL COMMENT 'หมวดหมู่',
   `author` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'ผู้แต่ง',
   `publisher` varchar(100) COLLATE utf8mb4_general_ci NOT NULL COMMENT 'สำนักพิมพ์',
   `year` year(4) NOT NULL COMMENT 'ปีที่พิมพ์'
@@ -42,10 +42,10 @@ CREATE TABLE `all_book` (
 --
 
 INSERT INTO `all_book` (`B_Id`, `B_Name`, `category_id`, `author`, `publisher`, `year`) VALUES
-(101, 'ภาษาไทย', '08', 'สมชาย', 'เล่มละหน้า', 0000),
-(102, 'ภาษา C พื้นฐาน', '01', 'สมหญิง', 'abc', 0000),
-(103, 'คณิตศาสตร์ ป.2', '12', 'สมหมาย', 'กขค', 2000),
-(104, 'หลักสูตรการสอน 2580', '24', 'สมศรี', 'php', 0000);
+(101, 'ภาษาไทย', 8, 'สมชาย', 'เล่มละหน้า', 0000),
+(102, 'ภาษา C พื้นฐาน', 1, 'สมหญิง', 'abc', 0000),
+(103, 'คณิตศาสตร์ ป.2', 12, 'สมหมาย', 'กขค', 2000),
+(104, 'หลักสูตรการสอน 2580', 24, 'สมศรี', 'php', 0000);
 
 -- --------------------------------------------------------
 
@@ -111,9 +111,10 @@ CREATE TABLE `history` (
 --
 
 INSERT INTO `history` (`S_photo`, `B_Name`, `S_Name`, `B_Id`, `S_Phone`, `Status01`, `H_id`) VALUES
-('img_698062b810b13.jpg', '', 'tor', 322312, '0506189956', 1, 39),
-('img_6980632e39cb5.jpg', '', 'tor', 322312, '0506189956', 1, 40),
-('img_6981986f251e1.jpg', '', 'tor', 102, '2131312', 1, 41);
+('img_698acad9a934f.png', 'ภาษา C พื้นฐาน', 'tor', 102, '0506189956', 0, 45),
+('img_698ad5aed471f.png', 'ภาษาไทย', 'yy', 101, '2131312', 0, 48),
+('img_698ad652227a0.jpg', 'ภาษา C พื้นฐาน', 'เต้ย', 102, '011111111111', 0, 49),
+('img_698ad6ea549f5.jpg', 'หลักสูตรการสอน 2580', 'pan', 104, '011111111111', 1, 50);
 
 -- --------------------------------------------------------
 
@@ -175,7 +176,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `all_book`
 --
 ALTER TABLE `all_book`
-  MODIFY `B_Id` int(3) NOT NULL AUTO_INCREMENT COMMENT 'รหัสหนังสือ', AUTO_INCREMENT=105;
+  MODIFY `B_Id` int(3) NOT NULL AUTO_INCREMENT COMMENT 'รหัสหนังสือ', AUTO_INCREMENT=106;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -187,7 +188,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `history`
 --
 ALTER TABLE `history`
-  MODIFY `H_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `H_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT for table `user`
