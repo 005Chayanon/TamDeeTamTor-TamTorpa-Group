@@ -1,6 +1,6 @@
 .box {
     width: auto;
-    height: auto;
+    height: 100%;
     background: #EFD8DE;
     border: 2px solid #696767;
     padding: 20px;
@@ -8,9 +8,96 @@
     border-radius: 8px;
 }
 
-table,
-th,
-td {
-    border: 1px solid #696767;
-    padding: 10px;
+/* กล่องตารางแบบใส */
+.box {
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 0 25px rgba(140, 0, 255, 0.35);
+}
+
+/* ตารางใส */
+.table {
+    background-color: transparent !important;
+    color: #eaeaea;
+}
+
+/* หัวตาราง */
+.table th {
+    background: rgba(120, 0, 200, 0.35);
+    color: #fff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* แถวข้อมูล */
+.table td {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* hover แถว */
+.table tbody tr:hover td {
+    background: rgba(150, 0, 255, 0.18);
+    transition: 0.2s ease;
+}
+
+/* รูป */
+.img-thumbnail {
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* badge */
+.badge {
+    font-size: 0.85rem;
+}
+
+/* ===== ปุ่ม admin ธีมม่วงดำ ===== */
+.btn-admin {
+    width: 120px;
+    height: 38px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    color: #fff;
+    transition: 0.25s;
+}
+
+/* ปุ่มคืน */
+.btn-return {
+    background: linear-gradient(135deg, #00c853, #00e676);
+}
+
+.btn-return:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px #00e676;
+}
+
+/* ปุ่มแก้ไข */
+.btn-edit {
+    background: linear-gradient(135deg, #7b1fa2, #b388ff);
+}
+
+.btn-edit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px #b388ff;
+}
+
+/* ปุ่มลบ */
+.btn-delete {
+    background: linear-gradient(135deg, #c62828, #ff5252);
+}
+
+.btn-delete:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 12px #ff5252;
+}
+
+/* จัดปุ่มให้อยู่ตรงกลาง */
+td .btn-admin {
+    display: block;
+    margin: 4px auto;
 }

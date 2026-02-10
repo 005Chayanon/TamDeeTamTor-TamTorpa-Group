@@ -1,6 +1,6 @@
 .box {
     width: auto;
-    height: auto;
+    height: 100%;
     background: #EFD8DE;
     border: 2px solid #696767;
     padding: 20px;

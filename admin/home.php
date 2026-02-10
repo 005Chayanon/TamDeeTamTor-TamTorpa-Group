@@ -7,6 +7,7 @@
         <title>PankQ Book</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <link rel="stylesheet" href="home.css">
     </head>
 
@@ -21,7 +22,18 @@
         if (isset($_GET['delete'], $_GET['H_id'])) {
             $H_id = (int)$_GET['H_id'];
             $conn->query("DELETE FROM history WHERE H_id = $H_id");
-            echo "<script>alert('ลบรายการแล้ว');location='home.php';</script>";
+            echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ!',
+                    text: 'ลบรายการเรียบร้อยแล้ว',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = 'home.php';
+                });
+                </script>
+                ";
             exit;
         }
 
@@ -29,7 +41,18 @@
         if (isset($_GET['return'], $_GET['H_id'])) {
             $H_id = (int)$_GET['H_id'];
             $conn->query("UPDATE history SET Status01 = 1 WHERE H_id = $H_id");
-            echo "<script>alert('คืนหนังสือเรียบร้อย');location='home.php';</script>";
+            echo "<script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'สำเร็จ!',
+                    text: 'คืนหนังสือเรียบร้อย',
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = 'home.php';
+                });
+                </script>
+                ";
             exit;
         }
 
@@ -72,11 +95,26 @@
                         <td>
                             <img src="../uploads/<?php echo $rs['S_photo']; ?>"
                                 width="120"
-                                class="img-thumbnail shadow"
-                                style="cursor:pointer"
+                                style="cursor:pointer;"
                                 data-bs-toggle="modal"
-                                data-bs-target="#photoModal<?php echo $rs['H_id']; ?>">
+                                data-bs-target="#imgModal<?php echo $rs['H_id']; ?>">
                         </td>
+                        <!-- Image Modal -->
+                        <div class="modal fade" id="imgModal<?php echo $rs['H_id']; ?>" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-centered modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title"><?php echo $rs['S_Name'] . " - " . $rs['B_Name']; ?></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <img src="../uploads/<?php echo $rs['S_photo']; ?>"
+                                            class="img-fluid rounded">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
                         <td><?php echo $rs['S_Name']; ?></td>
                         <td><?php echo $rs['B_Name']; ?></td>
@@ -97,15 +135,15 @@
                         <!-- จัดการ -->
                         <td>
                             <?php if ($rs['Status01'] == 0) { ?>
-                                <a class="btn btn-admin btn-return"
+                                <a class="btn btn-success " style="width: 65%;"
                                     href="?return=1&H_id=<?php echo $rs['H_id']; ?>">
                                     ยืนยันการคืน
                                 </a>
                             <?php } else { ?>
                                 <div class="text-success mb-1">✔ คืนแล้ว</div>
-                            <?php } ?>
+                            <?php } ?><br><br>
 
-                            <a class="btn btn-admin btn-edit"
+                            <a class="btn btn-warning" style="width: 65%;"
                                 href="editH.php?H_id=<?php echo $rs['H_id']; ?>">
                                 แก้ไข
                             </a>
@@ -114,10 +152,11 @@
                         <!-- ลบ -->
                         <td>
                             <button type="button"
-                                class="btn btn-admin btn-delete"
+                                class="btn btn-danger"
+                                style="width: 65%;"
                                 data-bs-toggle="modal"
                                 data-bs-target="#deleteModal<?php echo $rs['H_id']; ?>">
-                                ลบ
+                                ลบรายการ
                             </button>
                         </td>
                     </tr>
