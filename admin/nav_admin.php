@@ -13,6 +13,7 @@
   <link href="../icon/css/sharp-thin.css" rel="stylesheet" />
   <link href="../icon/css/sharp-duotone-thin.css" rel="stylesheet" />
   <link rel="../icon" type="image/x-icon" href="../Ficon/favicon.ico">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
     @font-face {
@@ -104,8 +105,10 @@
   $user = $result->fetch_assoc();
 
   if (isset($_GET['Logout'])) {
+    // session_start(); <-- ลบบรรทัดนี้ออก เพราะมีข้างบนแล้ว
     session_destroy();
     header('location: ../login.php');
+    exit();
   }
 
   ?>
@@ -166,8 +169,13 @@
             <li class="nav-item">
               <h5><a href="add_book.php"></a></h5>
               <h5><a class="nav-link text-decoration-underline link-offset-2" href="add_book.php">เพิ่มหนังสือ <i class="fa-solid fa-book"></i></a></h5>
+              <h5><a class="nav-link text-decoration-underline link-offset-2" href="list_book.php">รายการหนังสือ <i class="fa-solid fa-list"></i></a></h5>
               <h5><a class="nav-link text-decoration-underline link-offset-2" href="add_user.php">เพิ่มผู้ใช้ <i class="fa-solid fa-circle-plus"></i></a></h5>
-              <h5><a class="nav-link text-decoration-underline link-offset-2" href="?Logout" onclick="return confirm('ออกจากระบบ ใช่ หรือ ไม่')">ออกจากระบบ <i class="fa-solid fa-right-from-bracket"></i> </a></h5>
+              <h5>
+                <a class="nav-link text-decoration-underline link-offset-2" href="#" id="logout-btn">
+                  ออกจากระบบ <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+              </h5>
             </li>
           </ul>
 
@@ -177,6 +185,32 @@
   </nav>
   <!-- Navbar End -->
 
+
+  <script>
+    document.getElementById('logout-btn').addEventListener('click', function(e) {
+      e.preventDefault();
+
+      Swal.fire({
+        title: 'ยืนยันการออกจากระบบ?',
+        text: "คุณต้องการออกจากระบบใช่หรือไม่?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#8C3843', // สีแดงเข้มตามธีมคุณ
+        cancelButtonColor: '#edbbbb', // สีชมพูอ่อนตามธีมคุณ
+        confirmButtonText: 'ใช่, ออกเลย!',
+        cancelButtonText: 'ยกเลิก',
+        background: '#fae6e6', // พื้นหลัง Alert สีชมพูจางๆ
+        color: '#5d2028', // สีตัวอักษรเข้ม
+        customClass: {
+          popup: 'my-swal-font' // ถ้าต้องการเจาะจงฟอนต์
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "../login.php";
+        }
+      })
+    });
+  </script>
 </body>
 
 </html>

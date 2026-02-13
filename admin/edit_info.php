@@ -2,14 +2,21 @@
 session_start();
 include('../db.php');
 
+// ตรวจสอบความปลอดภัยเบื้องต้น
+if (!isset($_GET['U_Id'])) {
+    header("Location: list.php");
+    exit;
+}
+
 $U_Id = $_GET['U_Id'];
-$sql = "select * from user where U_Id ='$U_Id' ";
-$result = $conn->query($sql);
+$sql = "SELECT * FROM user WHERE U_Id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $U_Id);
+$stmt->execute();
+$result = $stmt->get_result();
 $rs = $result->fetch_assoc();
 
-
 if (isset($_POST['update'])) {
-
     $U_Id = $_POST['U_Id'];
     $U_Fullname = $_POST['U_Fullname'];
     $U_Email = $_POST['U_Email'];
@@ -17,127 +24,190 @@ if (isset($_POST['update'])) {
     $U_Password = $_POST['U_Password'];
     $U_Status = $_POST['U_Status'];
 
-    $sql = "update user set U_Fullname='$U_Fullname',
-                U_Email='$U_Email',
-                U_Phone='$U_Phone',
-                U_Password='$U_Password',
-                U_Status='$U_Status' 
-                where U_Id='$U_Id' ";
+    $sql_update = "UPDATE user SET U_Fullname=?, U_Email=?, U_Phone=?, U_Password=?, U_Status=? WHERE U_Id=?";
+    $stmt_upd = $conn->prepare($sql_update);
+    $stmt_upd->bind_param("sssssi", $U_Fullname, $U_Email, $U_Phone, $U_Password, $U_Status, $U_Id);
 
-    if ($conn->query($sql)) {
-        header('Location: list.php');
-        exit();
+    if ($stmt_upd->execute()) {
+        $status = "success";
+    } else {
+        $status = "error";
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>แก้ไขข้อมูลผู้ใช้</title>
-    <link rel="stylesheet" href="edit_info.css">
+    <title>แก้ไขข้อมูลผู้ใช้ | Admin System</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
-            background-color: #ffffff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdfdfd;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
         }
 
-        .login-wrapper {
+        .wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 80vh;
+            min-height: 90vh;
+            padding: 40px 20px;
         }
 
-        .login-box {
-            background: linear-gradient(135deg, #ffacb3, #f5c7cd);
-            border-radius: 15px;
-            padding: 30px 40px;
-            width: 420px;
-            box-shadow: 0 10px 25px rgba(255, 105, 180, 0.25);
-            border: 2px solid #e97f7f;
+        .edit-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 15px 35px rgba(231, 84, 128, 0.1);
+            border: 1px solid #f5c7cd;
         }
 
-        .login-box h2 {
+        .edit-card h2 {
             text-align: center;
             color: #e75480;
-            margin-bottom: 20px;
             font-weight: bold;
+            margin-bottom: 30px;
         }
 
-        .login-box p {
-            margin-bottom: 15px;
+        label {
+            font-weight: 600;
             color: #555;
+            margin-bottom: 8px;
+            margin-top: 15px;
+            display: block;
         }
 
-        .login-box input[type="text"],
-        .login-box input[type="number"],
-        .login-box input[type="file"] {
-            background-color: #ffffff;
-            width: 100%;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #666063;
-            outline: none;
+        .form-control,
+        .form-select {
+            border-radius: 12px;
+            padding: 12px;
+            border: 1px solid #ced4da;
             transition: 0.3s;
         }
 
-        .login-box input:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: #e75480;
-            box-shadow: 0 0 5px rgba(231, 84, 128, 0.4);
+            box-shadow: 0 0 0 0.25rem rgba(231, 84, 128, 0.1);
         }
 
-        .login-box button {
+        .btn-update {
             background-color: #e75480;
-            color: #fff;
+            color: white;
             border: none;
-            padding: 10px 18px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-right: 10px;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: bold;
+            width: 100%;
+            transition: 0.3s;
+            margin-top: 30px;
+            font-size: 1.1rem;
+        }
+
+        .btn-update:hover {
+            background-color: #d64370;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(214, 67, 112, 0.3);
+        }
+
+        .btn-back {
+            color: #888;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
             transition: 0.3s;
         }
 
-        .login-box button:hover {
-            background-color: #d9436f;
+        .btn-back:hover {
+            color: #e75480;
         }
 
-        .login-box button[type="reset"] {
-            background-color: #f6a5c0;
+        .input-group-text {
+            background-color: #fff;
+            border-radius: 12px 0 0 12px;
+            border-right: none;
+            color: #e75480;
         }
 
-        .login-box button[type="reset"]:hover {
-            background-color: #f28bb0;
+        .form-control-with-icon {
+            border-radius: 0 12px 12px 0;
         }
     </style>
-
 </head>
 
 <body>
     <?php include 'nav_admin.php'; ?>
-    <br>
-    <br>
-    <br>
-    <div class="login-wrapper">
-        <div class="login-box">
-            <h2>แก้ไขข้อมูลผู้ใช้</h2>
-            <form action="" method="post" enctype="multipart/form-data">
+
+    <div class="wrapper">
+        <div class="edit-card">
+            <h2><i class="fa-solid fa-user-gear me-2"></i>แก้ไขข้อมูลผู้ใช้</h2>
+
+            <form action="" method="post">
                 <input type="hidden" name="U_Id" value="<?php echo $rs['U_Id']; ?>">
-                ชื่อ-นามสกุล: <input type="text" name="U_Fullname" value="<?php echo $rs['U_Fullname']; ?>"><br><br>
-                อีเมล: <input type="email" name="U_Email" value="<?php echo $rs['U_Email']; ?>"><br><br>
-                เบอร์โทร: <input type="text" name="U_Phone" value="<?php echo $rs['U_Phone']; ?>"><br><br>
-                รหัสผ่าน: <input type="text" name="U_Password" value="<?php echo $rs['U_Password']; ?>"><br><br>
-                สถานะ:
-                <select name="U_Status">
-                    <option value="admin" <?php if ($rs['U_Status'] == 'admin') echo 'selected'; ?>>admin</option>
-                    <option value="user" <?php if ($rs['U_Status'] == 'user') echo 'selected'; ?>>user</option>
-                </select><br><br>
-                <button type="submit" name="update" class="btn btn-success">บันทึกการเปลี่ยนแปลง</button>
+
+                <label><i class="fa-solid fa-id-card me-1"></i> ชื่อ-นามสกุล</label>
+                <input type="text" name="U_Fullname" class="form-control" value="<?php echo htmlspecialchars($rs['U_Fullname']); ?>" required>
+
+                <label><i class="fa-solid fa-envelope me-1"></i> อีเมล</label>
+                <input type="email" name="U_Email" class="form-control" value="<?php echo htmlspecialchars($rs['U_Email']); ?>" required>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label><i class="fa-solid fa-phone me-1"></i> เบอร์โทร</label>
+                        <input type="text" name="U_Phone" class="form-control" value="<?php echo htmlspecialchars($rs['U_Phone']); ?>" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label><i class="fa-solid fa-shield-halved me-1"></i> สถานะ</label>
+                        <select name="U_Status" class="form-select">
+                            <option value="0" <?php if ($rs['U_Status'] == 0) echo 'selected'; ?>>Admin (ผู้ดูแลระบบ)</option>
+                            <option value="1" <?php if ($rs['U_Status'] == 1) echo 'selected'; ?>>User (ครูผู้สอน)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label><i class="fa-solid fa-key me-1"></i> รหัสผ่าน</label>
+                <input type="text" name="U_Password" class="form-control" value="<?php echo htmlspecialchars($rs['U_Password']); ?>" required>
+
+                <button type="submit" name="update" class="btn btn-update">
+                    <i class="fa-solid fa-floppy-disk me-1"></i> บันทึกการเปลี่ยนแปลง
+                </button>
+
+                <a href="list.php" class="btn-back"><i class="fa-solid fa-chevron-left me-1"></i> กลับหน้าจัดการผู้ใช้</a>
             </form>
         </div>
+    </div>
+
+    <script>
+        <?php if (isset($status) && $status == "success"): ?>
+            Swal.fire({
+                title: 'อัปเดตสำเร็จ!',
+                text: 'แก้ไขข้อมูลผู้ใช้เรียบร้อยแล้วค่ะ',
+                icon: 'success',
+                confirmButtonColor: '#e75480',
+                confirmButtonText: 'กลับหน้าหลัก'
+            }).then(() => {
+                window.location.href = 'list.php';
+            });
+        <?php elseif (isset($status) && $status == "error"): ?>
+            Swal.fire({
+                title: 'เกิดข้อผิดพลาด',
+                text: 'ไม่สามารถบันทึกข้อมูลได้ กรุณาลองใหม่อีกครั้ง',
+                icon: 'error',
+                confirmButtonColor: '#e75480'
+            });
+        <?php endif; ?>
+    </script>
 </body>
 
 </html>
