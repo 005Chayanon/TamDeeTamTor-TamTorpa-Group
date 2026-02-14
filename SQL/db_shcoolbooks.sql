@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 10, 2026 at 09:25 AM
+-- Generation Time: Feb 14, 2026 at 07:03 AM
 -- Server version: 8.0.17
 -- PHP Version: 7.3.10
 
@@ -45,7 +45,8 @@ INSERT INTO `all_book` (`B_Id`, `B_Name`, `category_id`, `author`, `publisher`, 
 (101, 'ภาษาไทย', 8, 'สมชาย', 'เล่มละหน้า', 0000),
 (102, 'ภาษา C พื้นฐาน', 1, 'สมหญิง', 'abc', 0000),
 (103, 'คณิตศาสตร์ ป.2', 12, 'สมหมาย', 'กขค', 2000),
-(104, 'หลักสูตรการสอน 2580', 24, 'สมศรี', 'php', 0000);
+(104, 'หลักสูตรการสอน 2580', 24, 'สมศรี', 'php', 0000),
+(108, 'ggez', 1, 'Max', 'Max', 1999);
 
 -- --------------------------------------------------------
 
@@ -111,10 +112,10 @@ CREATE TABLE `history` (
 --
 
 INSERT INTO `history` (`S_photo`, `B_Name`, `S_Name`, `B_Id`, `S_Phone`, `Status01`, `H_id`) VALUES
-('img_698acad9a934f.png', 'ภาษา C พื้นฐาน', 'tor', 102, '0506189956', 0, 45),
-('img_698ad5aed471f.png', 'ภาษาไทย', 'yy', 101, '2131312', 0, 48),
-('img_698ad652227a0.jpg', 'ภาษา C พื้นฐาน', 'เต้ย', 102, '011111111111', 0, 49),
-('img_698ad6ea549f5.jpg', 'หลักสูตรการสอน 2580', 'pan', 104, '011111111111', 1, 50);
+('img_698f4c94378b4.jpg', 'คณิตศาสตร์ ป.2', '2222', 103, '2131312', 1, 53),
+('img_698f5228b7e42.jpeg', 'ภาษา C พื้นฐาน', 'Max', 102, '2131312', 0, 54),
+('img_698f5291e5e4e.jpg', 'ggez', '111', 108, 'ๅ-ๅ/-ๅ', 1, 55),
+('img_698f5228b7e42.jpeg', 'ภาษา C พื้นฐาน', 'Max', 102, '2131312', 1, 56);
 
 -- --------------------------------------------------------
 
@@ -136,7 +137,6 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`U_Id`, `U_Fullname`, `U_Email`, `U_Password`, `U_Phone`, `U_Status`) VALUES
-(1, 'non', 'non@gmail.com', '1234', '0830503991', 0),
 (2, 'art', 'art@gmail.com', '1234', '0830503992', 1),
 (3, 'admin', 'admin@gmail.com', 'admin', 'admin', 0);
 
@@ -176,7 +176,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `all_book`
 --
 ALTER TABLE `all_book`
-  MODIFY `B_Id` int(3) NOT NULL AUTO_INCREMENT COMMENT 'รหัสหนังสือ', AUTO_INCREMENT=106;
+  MODIFY `B_Id` int(3) NOT NULL AUTO_INCREMENT COMMENT 'รหัสหนังสือ', AUTO_INCREMENT=110;
 
 --
 -- AUTO_INCREMENT for table `category`
@@ -188,13 +188,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `history`
 --
 ALTER TABLE `history`
-  MODIFY `H_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `H_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `U_Id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'รหัสประจำตัว', AUTO_INCREMENT=4;
+  MODIFY `U_Id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'รหัสประจำตัว', AUTO_INCREMENT=7;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

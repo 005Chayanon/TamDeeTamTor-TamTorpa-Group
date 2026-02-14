@@ -45,7 +45,7 @@ if (isset($_POST['login'])) {
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <link rel="icon" type="image/png" href="logo/logopank.png">
     <style>
         :root {
             --primary-pink: #e75480;

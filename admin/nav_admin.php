@@ -14,7 +14,7 @@
   <link href="../icon/css/sharp-duotone-thin.css" rel="stylesheet" />
   <link rel="../icon" type="image/x-icon" href="../Ficon/favicon.ico">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+  <link rel="icon" type="image/png" href="../logo/logopank.png">
   <style>
     @font-face {
       font-family: myFirstFont;

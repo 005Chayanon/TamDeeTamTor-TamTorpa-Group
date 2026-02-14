@@ -24,7 +24,7 @@ if (isset($_GET['delete_confirm'])) {
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <link rel="icon" type="image/png" href="../logo/logopank.png">
     <style>
         body {
             background-color: #fdfdfd;
