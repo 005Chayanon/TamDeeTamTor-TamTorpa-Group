@@ -29,6 +29,9 @@ if (isset($_GET['delete_confirm'])) {
         body {
             background-color: #fdfdfd;
             font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-image: url('../img/bg.png');
+            background-size: cover;
+            background-position: center;
         }
 
         .container-custom {

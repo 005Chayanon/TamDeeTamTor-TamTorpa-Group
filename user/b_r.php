@@ -80,6 +80,9 @@ if (isset($_POST['submit'])) {
         body {
             background-color: #fdfdfd;
             font-family: 'Segoe UI', sans-serif;
+            background-image: url('../img/bg.png');
+            background-size: cover;
+            background-position: center;
         }
 
         .wrapper {

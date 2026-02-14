@@ -19,6 +19,9 @@
         @font-face {
             font-family: myFirstFont;
             src: url(../font/Mitr-Regular.ttf);
+            background-image: url('../img/bg.png');
+            background-size: cover;
+            background-position: center;
         }
 
         body {
