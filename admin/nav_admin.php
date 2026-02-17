@@ -143,7 +143,7 @@
         <a type=button class="btn  btn-sm" type="button" href="b_r.php">เพิ่มรายการยืม-คืน</a>
       </div>
       <div class="d-grid gap-2 d-md-block bu-edit">
-        <a type="button" class="btn  btn-sm" type="button" href="list.php">แก้ไขข้อมูลผู้ใช้</a>
+        <a type="button" class="btn  btn-sm" type="button" href="list.php">รายชื่อผู้ใช้</a>
       </div>
 
       <!-- s toggle bar -->
@@ -168,8 +168,9 @@
           <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
             <li class="nav-item">
               <h5><a href="add_book.php"></a></h5>
-              <h5><a class="nav-link text-decoration-underline link-offset-2" href="add_book.php">เพิ่มหนังสือ <i class="fa-solid fa-book"></i></a></h5>
               <h5><a class="nav-link text-decoration-underline link-offset-2" href="list_book.php">รายการหนังสือ <i class="fa-solid fa-list"></i></a></h5>
+              <h5><a class="nav-link text-decoration-underline link-offset-2" href="add_book.php">เพิ่มหนังสือ <i class="fa-solid fa-book"></i></a></h5>
+              <h5><a class="nav-link text-decoration-underline link-offset-2" href="list.php">รายการผู้ใช้ <i class="fa-solid fa-users"></i></a></h5>
               <h5><a class="nav-link text-decoration-underline link-offset-2" href="add_user.php">เพิ่มผู้ใช้ <i class="fa-solid fa-circle-plus"></i></a></h5>
               <h5>
                 <a class="nav-link text-decoration-underline link-offset-2" href="#" id="logout-btn">

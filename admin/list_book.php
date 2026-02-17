@@ -80,8 +80,8 @@ if (isset($_GET['delete_id'])) {
     <div class="container main-container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold" style="color: #e75480;"><i class="fa-solid fa-book"></i> รายการหนังสือทั้งหมด</h2>
-            <a href="add_book.php" class="btn btn-add">
-                <i class="fa-solid fa-plus-circle"></i> เพิ่มหนังสือใหม่
+            <a href="add_book.php" class="btn btn-primary" style="background-color: #e75480; border: none; border-radius: 10px; padding: 10px 20px;">
+                <i class="fa-solid fa-user-plus me-1"></i> เพิ่มหนังสือใหม่
             </a>
         </div>
 
