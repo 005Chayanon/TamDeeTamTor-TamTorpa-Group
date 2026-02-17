@@ -53,7 +53,7 @@ if (isset($_POST['login'])) {
         }
 
         body {
-            background-image: url("img/kuy.png");
+            background-image: url("img/BH.png");
             background-size: 100% auto;
             background-repeat: no-repeat;
             background-position: center top;

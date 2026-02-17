@@ -176,7 +176,9 @@ if (isset($_POST['add_book'])) {
                 <label><i class="fa-regular fa-calendar-days me-1"></i> ปีที่พิมพ์</label>
                 <input type="number" name="year" class="form-control" min="1900" max="2100" required placeholder="เช่น 2567">
 
-                <button type="submit" name="add_book" class="btn btn-save">บันทึกข้อมูลหนังสือ</button>
+                <button type="submit" name="add_book" class="btn-save">
+                    <i class="fa-solid fa-check-circle me-1"></i> ยืนยันการเพิ่มหนังสือ
+                </button>
                 <a href="home.php" class="btn-back"><i class="fa-solid fa-arrow-left me-1"></i> กลับหน้าหน้าหลัก</a>
             </form>
         </div>
