@@ -135,6 +135,19 @@ if (isset($_POST['login'])) {
             font-size: 30px;
             margin: 0 auto 20px;
         }
+
+        .btn-back {
+            color: #888;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-back:hover {
+            color: #e75480;
+        }
     </style>
 </head>
 
@@ -161,6 +174,9 @@ if (isset($_POST['login'])) {
                     เข้าสู่ระบบ <i class="fa-solid fa-arrow-right-to-bracket ms-2"></i>
                 </button>
             </form>
+            <a href="home.php" class="btn-back"><i class="fa-solid fa-chevron-left me-1"></i> กลับ</a>
+            <br>
+            <p class="subtitle">หากไม่มีรหัสในการเข้าใข้งานโปรดติดต่อผู้ดูแล</p>
         </div>
     </div>
 

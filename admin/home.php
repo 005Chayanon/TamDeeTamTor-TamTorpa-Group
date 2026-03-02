@@ -6,23 +6,19 @@ include('../db.php');
 if (isset($_GET['delete'], $_GET['H_id'])) {
     $H_id = (int)$_GET['H_id'];
     $conn->query("DELETE FROM history WHERE H_id = $H_id");
-    $res = "deleted";
+    // รีเฟรชหน้าเพื่อเคลียร์ค่า GET
+    header("Location: home.php?status=deleted");
+    exit();
 }
 
 /* ===== คืนหนังสือ ===== */
 if (isset($_GET['return'], $_GET['H_id'])) {
     $H_id = (int)$_GET['H_id'];
     $conn->query("UPDATE history SET Status01 = 1 WHERE H_id = $H_id");
-    $res = "returned";
+    header("Location: home.php?status=returned");
+    exit();
 }
 
-/* ===== ค้นหา ===== */
-$search = $_GET['search'] ?? '';
-$where = '';
-if ($search !== '') {
-    $search_safe = $conn->real_escape_string($search);
-    $where = " AND (S_Name LIKE '%$search_safe%' OR B_Name LIKE '%$search_safe%' OR B_Id LIKE '%$search_safe%') ";
-}
 ?>
 
 <!DOCTYPE html>
@@ -34,37 +30,42 @@ if ($search !== '') {
     <title>จัดการยืม-คืนหนังสือ | PankQ Book</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="icon" type="image/png" href="../logo/logopank.png">
+
     <style>
         body {
-            background-color: #fdfdfd;
+            background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, sans-serif;
             background-image: url('../img/bg.png');
             background-size: cover;
             background-position: center;
         }
 
-        .main-content {
+        .main-container {
             padding-top: 100px;
             padding-bottom: 50px;
         }
 
-        /* Card & Box Style */
-        .content-card {
-            background: #fff;
-            border-radius: 20px;
+        .card {
+            border-radius: 15px;
             border: none;
-            box-shadow: 0 10px 30px rgba(231, 84, 128, 0.1);
-            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            background: #fff;
         }
 
-        /* Tab Style */
+        /* แต่งหัวตารางให้เป็นสีชมพูเหมือน list_book */
+        .table-thead {
+            background-color: #e75480;
+            color: white;
+        }
+
+        /* ปรับแท็บให้น่ารักเข้ากับธีม */
         .nav-tabs {
             border-bottom: 2px solid #f5c7cd;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .nav-tabs .nav-link {
@@ -85,110 +86,39 @@ if ($search !== '') {
             color: #e75480;
             background-color: #fff;
             border-bottom: 3px solid #e75480;
-            margin-bottom: -2px;
-        }
-
-        /* Table Style */
-        .table thead {
-            background-color: #fce4ec;
-            color: #880e4f;
-        }
-
-        .table th {
-            border: none;
-            padding: 15px;
-            font-weight: 600;
-        }
-
-        .table td {
-            vertical-align: middle;
-            padding: 15px;
         }
 
         .img-preview {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             object-fit: cover;
-            border-radius: 12px;
-            border: 2px solid #f5c7cd;
-            transition: 0.3s;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: 0.2s;
         }
-
+        
         .img-preview:hover {
             transform: scale(1.1);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        /* Button Style */
-        .btn-action {
-            border-radius: 8px;
-            font-weight: 600;
-            padding: 6px 15px;
-            transition: 0.3s;
-        }
-
-        .btn-confirm {
-            background-color: #4caf50;
-            color: white;
-            border: none;
-        }
-
-        .btn-confirm:hover {
-            background-color: #388e3c;
-        }
-
-        .btn-edit {
-            background-color: #ffb74d;
-            color: white;
-            border: none;
-        }
-
-        .btn-delete {
-            background-color: #ff5252;
-            color: white;
-            border: none;
-        }
-
-        .badge-borrow {
-            background-color: #fff3e0;
-            color: #e65100;
-            border: 1px solid #ffe0b2;
-        }
-
-        .badge-success {
-            background-color: #e8f5e9;
-            color: #2e7d32;
-            border: 1px solid #c8e6c9;
-        }
-
-        /* ตกแต่ง Badge สถานะใหม่ให้ดูง่ายขึ้น */
         .status-pill {
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 50px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
         }
 
-        /* สีส้มสำหรับกำลังยืม - เน้นให้ดูเด่นว่าต้องติดตาม */
         .status-borrowing {
             background-color: #fff4e5;
             color: #ef6c00;
             border: 1px solid #ffe0b2;
         }
 
-        /* สีเขียวสำหรับคืนแล้ว - ดูสะอาดตาว่าเรียบร้อยแล้ว */
         .status-returned {
             background-color: #e8f5e9;
             color: #2e7d32;
             border: 1px solid #c8e6c9;
-        }
-
-        /* เพิ่ม Effect ให้แถวที่ยังไม่คืนมีสีพื้นหลังอ่อนๆ เพื่อให้แยกง่ายขึ้น */
-        .row-borrowing {
-            background-color: rgba(231, 84, 128, 0.02);
         }
     </style>
 </head>
@@ -197,146 +127,206 @@ if ($search !== '') {
 
     <?php include 'nav_admin.php'; ?>
 
-    <div class="container main-content">
+    <div class="container main-container">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold" style="color: #e75480;"><i class="fa-solid fa-clock-rotate-left me-2"></i> ประวัติการยืม-คืน</h2>
-            <form class="d-flex" action="" method="get">
-                <div class="input-group">
-                    <input type="text" name="search" class="form-control" placeholder="ค้นหาชื่อหรือหนังสือ..." value="<?php echo htmlspecialchars($search); ?>">
-                    <button class="btn btn-outline-danger" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
-            </form>
+            <a href="b_r.php" class="btn btn-primary" style="background-color: #e75480; border: none; border-radius: 10px; padding: 10px 20px;">
+                <i class="fa-solid fa-plus me-1"></i> เพิ่มรายการยืม-คืน
+            </a>
         </div>
 
-        <div class="content-card">
+        <div class="card p-4">
             <ul class="nav nav-tabs" id="borrowTab" role="tablist">
                 <li class="nav-item">
-                    <button class="nav-link active" id="borrowing-tab" data-bs-toggle="tab" data-bs-target="#borrowing" type="button"><i class="fa-solid fa-hand-holding-heart me-2"></i>กำลังยืม</button>
+                    <button class="nav-link active" id="borrowing-tab" data-bs-toggle="tab" data-bs-target="#borrowing" type="button">
+                        <i class="fa-solid fa-hourglass-half me-2"></i> กำลังยืม
+                    </button>
                 </li>
                 <li class="nav-item">
-                    <button class="nav-link" id="returned-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button"><i class="fa-solid fa-circle-check me-2"></i>คืนแล้ว</button>
+                    <button class="nav-link" id="returned-tab" data-bs-toggle="tab" data-bs-target="#returned" type="button">
+                        <i class="fa-solid fa-circle-check me-2"></i> คืนแล้ว
+                    </button>
                 </li>
             </ul>
 
             <div class="tab-content" id="borrowTabContent">
-                <div class="tab-pane fade show active" id="borrowing">
-                    <?php renderTable($conn, $where, 0); ?>
+                
+                <div class="tab-pane fade show active" id="borrowing" role="tabpanel">
+                    <div class="table-responsive">
+                        <table id="tableBorrowing" class="table table-hover w-100">
+                            <thead class="table-thead">
+                                <tr>
+                                    <th class="text-center">รูปถ่าย</th>
+                                    <th>ผู้ยืม</th>
+                                    <th>หนังสือ</th>
+                                    <th>วันที่ยืม</th>
+                                    <th class="text-center">สถานะ</th>
+                                    <th class="text-center">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $sql0 = "SELECT * FROM history WHERE Status01 = 0 ORDER BY H_id DESC";
+                                $query0 = $conn->query($sql0);
+                                while ($rs = $query0->fetch_assoc()) {
+                                ?>
+                                    <tr>
+                                        <td class="text-center">
+                                            <img src="../uploads/<?php echo $rs['S_photo']; ?>" class="img-preview" onclick="showImage('../uploads/<?php echo $rs['S_photo']; ?>', '<?php echo addslashes($rs['S_Name']); ?>')">
+                                        </td>
+                                        <td>
+                                            <div class="fw-bold"><?php echo $rs['S_Name']; ?></div>
+                                            <small class="text-muted"><i class="fa-solid fa-phone"></i> <?php echo $rs['S_Phone']; ?></small>
+                                        </td>
+                                        <td>
+                                            <div class="text-primary fw-600"><?php echo $rs['B_Name']; ?></div>
+                                            <small class="badge bg-light text-dark border">ID: <?php echo $rs['B_Id']; ?></small>
+                                        </td>
+                                        <td><?php echo date('d/m/Y H:i', strtotime($rs['H_ts'])); ?></td>
+                                        <td class="text-center">
+                                            <span class="status-pill status-borrowing"><i class="fa-solid fa-clock"></i> กำลังยืม</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <button onclick="confirmReturn(<?php echo $rs['H_id']; ?>)" class="btn btn-sm btn-success text-white mb-1" title="คืนหนังสือ">
+                                                <i class="fa-solid fa-undo"></i> คืนหนังสือ
+                                            </button>
+                                            <a href="editH.php?H_id=<?php echo $rs['H_id']; ?>" class="btn btn-sm btn-outline-warning mb-1" title="แก้ไข">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
+                                            <button onclick="confirmDelete(<?php echo $rs['H_id']; ?>)" class="btn btn-sm btn-outline-danger mb-1" title="ลบ">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="tab-pane fade" id="returned">
-                    <?php renderTable($conn, $where, 1); ?>
+
+                <div class="tab-pane fade" id="returned" role="tabpanel">
+                    <div class="table-responsive">
+                        <table id="tableReturned" class="table table-hover w-100">
+                            <thead class="table-thead">
+                                <tr>
+                                    <th class="text-center">รูปถ่าย</th>
+                                    <th>ผู้ยืม</th>
+                                    <th>หนังสือ</th>
+                                    <th>วันที่ยืม</th>
+                                    <th class="text-center">สถานะ</th>
+                                    <th class="text-center">จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $sql1 = "SELECT * FROM history WHERE Status01 = 1 ORDER BY H_id DESC";
+                                $query1 = $conn->query($sql1);
+                                while ($rs = $query1->fetch_assoc()) {
+                                ?>
+                                    <tr>
+                                        <td class="text-center">
+                                            <img src="../uploads/<?php echo $rs['S_photo']; ?>" class="img-preview" onclick="showImage('../uploads/<?php echo $rs['S_photo']; ?>', '<?php echo addslashes($rs['S_Name']); ?>')">
+                                        </td>
+                                        <td>
+                                            <div class="fw-bold"><?php echo $rs['S_Name']; ?></div>
+                                            <small class="text-muted"><i class="fa-solid fa-phone"></i> <?php echo $rs['S_Phone']; ?></small>
+                                        </td>
+                                        <td>
+                                            <div class="text-secondary fw-600"><?php echo $rs['B_Name']; ?></div>
+                                            <small class="badge bg-light text-dark border">ID: <?php echo $rs['B_Id']; ?></small>
+                                        </td>
+                                        <td><?php echo date('d/m/Y H:i', strtotime($rs['H_ts'])); ?></td>
+                                        <td class="text-center">
+                                            <span class="status-pill status-returned"><i class="fa-solid fa-check"></i> คืนแล้ว</span>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="editH.php?H_id=<?php echo $rs['H_id']; ?>" class="btn btn-sm btn-outline-warning" title="แก้ไข">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
+                                            <button onclick="confirmDelete(<?php echo $rs['H_id']; ?>)" class="btn btn-sm btn-outline-danger" title="ลบ">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <?php
-    function renderTable($conn, $where, $status)
-    {
-        $sql = "SELECT * FROM history WHERE Status01 = $status $where ORDER BY H_id DESC";
-        $result = $conn->query($sql);
-    ?>
-        <div class="table-responsive mt-2">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th class="text-center">รูปถ่าย</th>
-                        <th>ผู้ยืม</th>
-                        <th>ข้อมูลหนังสือ</th>
-                        <th>วันยืม</th>
-                        <th class="text-center">สถานะ</th>
-                        <th class="text-center">จัดการ</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if ($result->num_rows > 0) {
-                        while ($rs = $result->fetch_assoc()) { ?>
-                            <tr>
-                                <td class="text-center">
-                                    <img src="../uploads/<?php echo $rs['S_photo']; ?>" class="img-preview" data-bs-toggle="modal" data-bs-target="#imgModal<?php echo $rs['H_id']; ?>" title="คลิกเพื่อดูรูปใหญ่">
-                                </td>
-                                <td>
-                                    <div class="fw-bold text-dark"><?php echo $rs['S_Name']; ?></div>
-                                    <small class="text-muted"><i class="fa-solid fa-phone fa-xs"></i> <?php echo $rs['S_Phone']; ?></small>
-                                </td>
-                                <td>
-                                    <div class="text-primary fw-600"><?php echo $rs['B_Name']; ?></div>
-                                    <small class="badge bg-light text-dark border">ID: <?php echo $rs['B_Id']; ?></small>
-                                </td>
-                                <td><small class="text-muted"><?php echo date('d/m/Y H:i', strtotime($rs['H_ts'])); ?></small></td>
-                                <td class="text-center">
-                                    <?php if ($rs['Status01'] == 0): ?>
-                                        <div class="status-pill status-borrowing">
-                                            <i class="fa-solid fa-hourglass-half fa-spin"></i> กำลังยืม
-                                        </div>
-                                    <?php else: ?>
-                                        <div class="status-pill status-returned">
-                                            <i class="fa-solid fa-circle-check"></i> คืนแล้ว
-                                        </div>
-                                    <?php endif; ?>
-                                </td>
-                                <td class="text-center">
-                                    <div class="d-flex justify-content-center gap-1">
-                                        <?php if ($rs['Status01'] == 0): ?>
-                                            <a class="btn btn-success btn-sm px-3" href="?return=1&H_id=<?php echo $rs['H_id']; ?>"
-                                                style="border-radius: 8px; font-weight: 600;">
-                                                <i class="fa-solid fa-undo me-1"></i> คืนหนังสือ
-                                            </a>
-                                        <?php endif; ?>
-
-                                        <a class="btn btn-outline-warning btn-sm" href="editH.php?H_id=<?php echo $rs['H_id']; ?>" style="border-radius: 8px;">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </a>
-
-                                        <button class="btn btn-outline-danger btn-sm" onclick="confirmDelete(<?php echo $rs['H_id']; ?>)" style="border-radius: 8px;">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-
-                            <div class="modal fade" id="imgModal<?php echo $rs['H_id']; ?>" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content border-0" style="border-radius: 20px; overflow: hidden;">
-                                        <div class="modal-header border-0 bg-white">
-                                            <h5 class="modal-title fw-bold text-danger"><?php echo $rs['S_Name'] . " - " . $rs['B_Name']; ?></h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                        </div>
-                                        <div class="modal-body p-0">
-                                            <img src="../uploads/<?php echo $rs['S_photo']; ?>" class="w-100">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php }
-                    } else { ?>
-                        <tr>
-                            <td colspan="6" class="text-center py-5 text-muted">ไม่พบประวัติการยืมในหมวดนี้</td>
-                        </tr>
-                    <?php } ?>
-                </tbody>
-            </table>
-        </div>
-    <?php } ?>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
-        // แสดง SweetAlert ตามสถานะ
-        <?php if (isset($res)): ?>
-            Swal.fire({
-                icon: 'success',
-                title: 'สำเร็จ!',
-                text: '<?php echo ($res == "returned" ? "คืนหนังสือเรียบร้อยแล้วค่ะ" : "ลบข้อมูลเรียบร้อยแล้ว"); ?>',
-                confirmButtonColor: '#e75480',
-                timer: 2000
-            }).then(() => {
-                window.location.href = 'home.php';
-            });
-        <?php endif; ?>
+        $(document).ready(function() {
+            // ตั้งค่า DataTables ทั่วไป (ภาษาไทย, จำนวนแถว)
+            var tableOptions = {
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.6/i18n/th.json"
+                },
+                "pageLength": 10,
+                "order": [[ 3, "desc" ]] // เรียงตามวันที่ยืม (col index 3) ล่าสุดก่อน
+            };
 
+            // เรียกใช้ DataTable ทั้งสองตาราง
+            var tableBorrow = $('#tableBorrowing').DataTable(tableOptions);
+            var tableReturn = $('#tableReturned').DataTable(tableOptions);
+
+            // *** แก้ปัญหา DataTable เพี้ยนเมื่ออยู่ใน Tab ที่ซ่อนอยู่ ***
+            $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function(e) {
+                $.fn.dataTable.tables({ visible: true, api: true }).columns.adjust();
+            });
+
+            // ตรวจสอบสถานะจาก URL เพื่อแสดง Alert
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('status') === 'returned') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'คืนหนังสือเรียบร้อย',
+                    text: 'สถานะถูกปรับปรุงแล้ว',
+                    confirmButtonColor: '#e75480',
+                    timer: 2000
+                });
+            } else if (urlParams.get('status') === 'deleted') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'ลบข้อมูลสำเร็จ',
+                    confirmButtonColor: '#e75480',
+                    timer: 2000
+                });
+            }
+        });
+
+        // ฟังก์ชันยืนยันการคืน
+        function confirmReturn(id) {
+            Swal.fire({
+                title: 'ยืนยันการคืนหนังสือ?',
+                text: "ต้องการเปลี่ยนสถานะเป็น 'คืนแล้ว' ใช่หรือไม่?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'ใช่, คืนหนังสือ',
+                cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '?return=1&H_id=' + id;
+                }
+            })
+        }
+
+        // ฟังก์ชันยืนยันการลบ
         function confirmDelete(id) {
             Swal.fire({
                 title: 'ยืนยันการลบ?',
-                text: "ข้อมูลนี้จะหายไปจากประวัติถาวรนะคะ!",
-                icon: 'error',
+                text: "ข้อมูลนี้จะหายไปถาวร!",
+                icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#ff5252',
                 cancelButtonColor: '#6c757d',
@@ -348,7 +338,19 @@ if ($search !== '') {
                 }
             })
         }
-    </script>
-</body>
 
+        // ฟังก์ชันแสดงรูปภาพขนาดใหญ่
+        function showImage(src, title) {
+            Swal.fire({
+                title: title,
+                imageUrl: src,
+                imageWidth: 400,
+                imageAlt: 'Image',
+                confirmButtonColor: '#e75480',
+                showCloseButton: true,
+            });
+        }
+    </script>
+
+</body>
 </html>

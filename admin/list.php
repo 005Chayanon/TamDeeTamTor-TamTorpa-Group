@@ -171,7 +171,7 @@ if (isset($_GET['delete_confirm'])) {
                                 $status_label = 'ผู้ดูแลระบบ';
                             } else {
                                 $status_class = 'bg-teacher';
-                                $status_label = 'ครูผู้สอน';
+                                $status_label = 'ครู/บุคลากร';
                             }
                         ?>
                             <tr>
